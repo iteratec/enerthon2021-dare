@@ -9,6 +9,7 @@ const PUBLIC_PATH = "public";
 const TEMPLATES_PATH = "templates";
 const DEFAULT_TEMPLATE = "default.html";
 const PAGES_PATH = "src/pages";
+const BUILD_FOLDER = "build";
 
 const fs = require('fs');
 const appDirectory = fs.realpathSync(process.cwd());
@@ -37,7 +38,7 @@ const common = {
         zer0slides: "./src/index.tsx"
     },
     output: {
-        path: path.resolve(__dirname, "build")
+        path: path.resolve(__dirname, BUILD_FOLDER)
     },
     devtool: 'source-map',
     devServer: {
@@ -125,7 +126,9 @@ const common = {
             // Make sure to add the new loader(s) before the "file" loader.
         ],
     },
-    plugins: [],
+    plugins: [
+        new CopyWebpackPlugin({patterns: [{from: PUBLIC_PATH, to: ""}]})
+    ],
     resolve: {
         extensions: [".tsx", ".ts", ".js"]
     },
