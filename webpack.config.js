@@ -41,12 +41,11 @@ const common = {
     },
     devtool: 'source-map',
     devServer: {
-        contentBase: path.join(__dirname, "public"),
+        static: {
+            directory: path.join(__dirname, "public")
+        },
         compress: true,
-        port: 9000,
-        proxy: {
-            "/api": "http://localhost:3225"
-        }
+        port: 9000
     },
     module: {
         strictExportPresence: true,
