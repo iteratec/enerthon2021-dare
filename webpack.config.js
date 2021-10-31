@@ -90,11 +90,11 @@ const common = {
                     },
                     {
                         test: /\.less$/,
-                        use: ["style-loader", "css-loader", "less-loader"]
+                        use: [{loader: MiniCssExtractPlugin.loader}, "css-loader", "less-loader"]
                     },
                     {
                         test: /\.scss$/,
-                        use: ["style-loader", "css-loader", "sass-loader"]
+                        use: [{loader: MiniCssExtractPlugin.loader}, "css-loader", "sass-loader"]
                     },
                     {
                         test: /\.css$/,
@@ -126,10 +126,7 @@ const common = {
             // Make sure to add the new loader(s) before the "file" loader.
         ],
     },
-    plugins: [
-        new CopyWebpackPlugin([PUBLIC_PATH, {from: "data/static", to: "cosine-browser"}]),
-        new CopyWebpackPlugin([PUBLIC_PATH, {from: "data/lsi", to: "lsi"}]),
-    ],
+    plugins: [],
     resolve: {
         extensions: [".tsx", ".ts", ".js"]
     },
