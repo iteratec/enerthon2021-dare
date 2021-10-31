@@ -16,18 +16,25 @@ export const PowerPlants = ({width, height}: PowerPlantsProps) => {
     useEffect(() => {
         if(document.getElementById("#maproot") == null) {
             d3.select("#power-plants").append("svg")
-                .attr("viewBox", [0.5, -30.5, width, height + 30].join(" "))
+                .attr("viewBox", [0.5, -30.5, width, height + 100].join(" "))
                 .style("font", "10px sans-serif")
                 .append("g")
                 .attr("id", "maproot")
         }
 
         d3.select("#maproot")
+            .selectAll("path.state")
             .data(germanMap)
             .join("path")
             .attr("id", d => d.id)
             .attr("class", "state")
             .attr("d", d => d.path)
+            .on("mouseover", function () {
+                d3.select(this).classed("active", true)
+            })
+            .on("mouseout", function () {
+                d3.select(this).classed("active", false)
+            })
     })
 
     return <div id="power-plants"></div>

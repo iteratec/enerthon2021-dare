@@ -1,5 +1,10 @@
 .state {
-  fill: antiquewhite;
-  stroke: black;
-  stroke-width: 3px;
+  fill: ghostwhite;
+  stroke: darkgray;
+  stroke-width: 1px;
+
+  &.active {
+    fill: purple;
+    opacity: 50%;
+  }
 }
