@@ -13,19 +13,22 @@ interface PowerPlantsProps {
 
 export const PowerPlants = ({width, height}: PowerPlantsProps) => {
 
-    const showMap = () => {
-        const svg = d3.select("#power-plants").append("svg")
-            .attr("viewBox", [0.5, -30.5, width, height + 30].join(" "))
-            .style("font", "10px sans-serif");
+    useEffect(() => {
+        if(document.getElementById("#maproot") == null) {
+            d3.select("#power-plants").append("svg")
+                .attr("viewBox", [0.5, -30.5, width, height + 30].join(" "))
+                .style("font", "10px sans-serif")
+                .append("g")
+                .attr("id", "maproot")
+        }
 
-        svg
-            .append("g")
+        d3.select("#maproot")
             .data(germanMap)
             .join("path")
             .attr("id", d => d.id)
             .attr("class", "state")
             .attr("d", d => d.path)
-    }
+    })
 
     return <div id="power-plants"></div>
 }
