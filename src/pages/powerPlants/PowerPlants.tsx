@@ -45,8 +45,8 @@ export const PowerPlants = ({width, height}: PowerPlantsProps) => {
         d3.select("#maproot")
             .append("g")
             .attr("id", "windmillroot");
-        drawWindmill("windmill-1", "#windmillroot", 100, 100)
-        drawWindmill("windmill-1", "#windmillroot", 500, 300)
+        drawWindmill("windmill-1", "#windmillroot", 3000, 3000)
+        drawWindmill("windmill-2", "#windmillroot", 2300, 400)
 
     })
 

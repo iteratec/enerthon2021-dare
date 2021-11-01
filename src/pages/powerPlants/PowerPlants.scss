@@ -28,12 +28,16 @@
   }
 }
 
-//@keyframes spin {
-//  from { transform: rotate(0deg);}
-//  to { transform: rotate(360deg);}
-//}
+.windmill {
+  stroke-width: 2px;
+  stroke: black;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg);}
+  to { transform: rotate(360deg);}
+}
 
 #wieken {
   animation: spin 2s infinite linear;
-  transform-origin: 111.13565826416016px 154.83003997802734px;
 }
