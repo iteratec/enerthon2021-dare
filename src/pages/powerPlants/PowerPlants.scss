@@ -9,35 +9,3 @@
   }
 }
 
-.windmill {
-  stroke: none;
-  stroke-width: 1px;
-  fill: none;
-  fill-rule: evenodd;
-}
-
-.pole {
-  & polygon {
-    fill: #FFFFFF
-  }
-}
-
-.wieken {
-  & path {
-    fill: #FFFFFF
-  }
-}
-
-.windmill {
-  stroke-width: 2px;
-  stroke: black;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg);}
-  to { transform: rotate(360deg);}
-}
-
-#wieken {
-  animation: spin 2s infinite linear;
-}

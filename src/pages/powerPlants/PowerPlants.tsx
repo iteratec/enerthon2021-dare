@@ -3,7 +3,7 @@ import {useState, useEffect} from "react";
 import * as d3 from "d3";
 
 import {germanMap} from "./germanMap";
-import {drawWindmill, createWindmillDefs} from "./drawWindmill";
+import {drawWindmill, createWindmillDefs} from "../components/drawWindmill";
 
 import "./PowerPlants.scss";
 
