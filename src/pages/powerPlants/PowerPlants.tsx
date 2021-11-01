@@ -3,6 +3,7 @@ import {useState, useEffect} from "react";
 import * as d3 from "d3";
 
 import {germanMap} from "./germanMap";
+import {drawWindmill, createWindmillDefs} from "./drawWindmill";
 
 import "./PowerPlants.scss";
 
@@ -14,12 +15,17 @@ interface PowerPlantsProps {
 export const PowerPlants = ({width, height}: PowerPlantsProps) => {
 
     useEffect(() => {
+        // kudos to: https://codepen.io/jorinde/pen/ObvRGd
         if(document.getElementById("#maproot") == null) {
-            d3.select("#power-plants").append("svg")
-                .attr("viewBox", [0.5, -30.5, width, height + 100].join(" "))
+            const svg = d3.select("#power-plants").append("svg");
+
+            svg.attr("viewBox", [0.5, -30.5, width, height + 100].join(" "))
                 .style("font", "10px sans-serif")
                 .append("g")
-                .attr("id", "maproot")
+                .attr("id", "maproot");
+
+            createWindmillDefs(svg);
+
         }
 
         d3.select("#maproot")
@@ -34,7 +40,14 @@ export const PowerPlants = ({width, height}: PowerPlantsProps) => {
             })
             .on("mouseout", function () {
                 d3.select(this).classed("active", false)
-            })
+            });
+
+        d3.select("#maproot")
+            .append("g")
+            .attr("id", "windmillroot");
+        drawWindmill("windmill-1", "#windmillroot", 100, 100)
+        drawWindmill("windmill-1", "#windmillroot", 500, 300)
+
     })
 
     return <div id="power-plants"></div>
