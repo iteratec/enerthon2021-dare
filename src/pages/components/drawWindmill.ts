@@ -104,7 +104,7 @@ const createAs = (root: any) => {
 export const drawWindmill = (id: string, parentSelector: string, x: number, y: number) => {
     const root = d3.selectAll(parentSelector).append("g").attr("id", id)
         .attr("class", "windmill")
-        .attr("transform", `scale(0.2 0.2) translate(${x},${y})`);
+        .attr("transform", `translate(${x},${y}) scale(0.1 0.1)`);
 
     createPole(root);
     createWieken(root);
