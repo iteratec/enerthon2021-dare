@@ -1,0 +1,4 @@
+.windmill{stroke:none;stroke-width:1px;fill:none;fill-rule:evenodd}.pole polygon{fill:#fff}.wieken path{fill:#fff}.windmill{stroke-width:2px;stroke:#000}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}#wieken{animation:spin 2s infinite linear}
+.leaflet-container{height:100vh}
+
+/*# sourceMappingURL=mapView.2f6cc9fa.css.map*/
