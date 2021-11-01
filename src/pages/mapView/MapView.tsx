@@ -17,17 +17,17 @@ export const MapView = () => {
             d3.select("#maproot")
                 .append("g")
                 .attr("id", "windmillroot");
-            drawWindmill("windmill-1", "#windmillroot", 100, 100)
+            drawWindmill("windmill-1", "#windmillroot", 200, 200)
 
         })
     })
 
-    return <MapContainer center={[49.602228, 9.61516]} zoom={13} scrollWheelZoom={false}>
+    return <MapContainer center={[49.602228, 9.61516]} zoom={10} scrollWheelZoom={false}>
         <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <SVGOverlay attributes={{ stroke: 'red' }} bounds={[[49.58, 9.60], [49.62, 9.64]]}>
+        <SVGOverlay attributes={{ stroke: 'red' }} bounds={[[49, 9], [50, 10]]}>
         </SVGOverlay>
     </MapContainer>
 }
