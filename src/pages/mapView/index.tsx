@@ -5,4 +5,4 @@ import {MapView} from "./MapView";
 
 document.getElementById("title").innerText = "Map View";
 
-ReactDOM.render(<MapView/>, document.getElementById("container"));
+ReactDOM.render(<MapView/>, document.getElementById("map"));

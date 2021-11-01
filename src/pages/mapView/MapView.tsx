@@ -17,7 +17,7 @@ export const MapView = () => {
             d3.select("#maproot")
                 .append("g")
                 .attr("id", "windmillroot");
-            drawWindmill("windmill-1", "#windmillroot", 200, 200)
+            drawWindmill("windmill-1", "#windmillroot", 1200, 2000)
 
         })
     })

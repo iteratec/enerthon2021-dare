@@ -13,13 +13,59 @@
 
     <style>
         #container {
-            z-index: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-family: "Andale Mono";
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #menu {
+            flex-grow: 1;
+            min-height: 5%;
+        }
+
+        #content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            flex-grow: 15;
+        }
+
+        #footer {
+            background-color: darkseagreen;
+            flex-grow: 4;
+            min-height: 20vh;
+        }
+
+        #map {
+            flex-grow: 5;
+            max-width: 50%;
+        }
+
+        #dashboard {
+            background-color: lightblue;
+            flex-grow: 6;
         }
     </style>
 </head>
 
 <body>
-<div id="container"></div>
+<div id="container">
+    <div id="menu">
+        <h1>DA / RE</h1>
+    </div>
+    <div id="content">
+        <div id="map"></div>
+        <div id="dashboard">
+            Dashboard
+        </div>
+    </div>
+    <div id="footer">
+        Footer
+    </div>
+</div>
 
 <script>
 </script>
