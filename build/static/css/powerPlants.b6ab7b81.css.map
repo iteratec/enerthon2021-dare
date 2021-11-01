@@ -1,1 +1,0 @@
-{"version":3,"file":"static/css/powerPlants.b6ab7b81.css","mappings":"AAAA,OACE,aACA,eACA,iBAEA,cACE,YACA,Y","sources":["webpack://dare/./src/pages/powerPlants/PowerPlants.scss"],"sourcesContent":[".state {\n  fill: ghostwhite;\n  stroke: darkgray;\n  stroke-width: 1px;\n\n  &.active {\n    fill: purple;\n    opacity: 50%;\n  }\n}\n"],"names":[],"sourceRoot":""}
