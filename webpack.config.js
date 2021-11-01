@@ -127,7 +127,8 @@ const common = {
         ],
     },
     plugins: [
-        new CopyWebpackPlugin({patterns: [{from: PUBLIC_PATH, to: ""}]})
+        new CopyWebpackPlugin({patterns: [{from: PUBLIC_PATH, to: ""}]}),
+        new CopyWebpackPlugin({patterns: [{from: PUBLIC_PATH, to: "mapView"}]}),
     ],
     resolve: {
         extensions: [".tsx", ".ts", ".js"]
