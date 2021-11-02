@@ -63,13 +63,6 @@ const chartData = (name, date) => {
     });
 }
 
-const popupContent = {
-    textAlign: "center",
-    height: "300px",
-    width: "300px",
-    marginTop: "30px"
-};
-
 export const MapView = () => {
 
     return <MapContainer center={[51.1657, 10.4515]}
@@ -87,7 +80,7 @@ export const MapView = () => {
             <Popup>
                 <h1>{name}</h1>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
-                <div style={popupContent}>
+                <div className="popupContent">
                     <AreaChart showGrid={false} data={chartData(name, "2021-06-02T00:00:00+02:00")}/>
                 </div>
             </Popup>
