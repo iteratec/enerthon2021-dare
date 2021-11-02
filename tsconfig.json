@@ -17,7 +17,8 @@
     "importHelpers": true,
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "allowSyntheticDefaultImports": true
   },
   "rules": {
     "jsx-no-lambda": false,
