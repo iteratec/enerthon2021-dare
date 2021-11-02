@@ -19,7 +19,7 @@ export const DareDayPicker = ({startDay, dayChangedCallback}: DareDayPickerProps
     }, [selectedDay])
 
     return <div className="titlemenu">
-        <h1>{dayjs(selectedDay).format("MMMM D YYYY")}</h1>
+        <b>{dayjs(selectedDay).format("MMMM D YYYY")}</b>
         <div className="datepicker">
             <DatePicker
                 minDate={new Date("2021-06-01")}

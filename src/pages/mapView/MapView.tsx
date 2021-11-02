@@ -82,7 +82,7 @@ export const MapView = ({day}: MapViewProps) => {
             icon={scaledIcon(.5, colormap[powerPlantData[name]["Energieträger"]])}
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
             <Popup>
-                <h1>Data from {name} for {dayjs(day).format("MMMM D YYYY")}</h1>
+                <h3>Data from {name} for {dayjs(day).format("MMMM D YYYY")}</h3>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
                 <div className="popupContent">
                     <AreaChart showGrid={false} data={chartData(name, dayjs(day).add(1, "day").format("YYYY-MM-DD[T][00]:mm:ssZ"))}/>
