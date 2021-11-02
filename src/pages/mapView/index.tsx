@@ -11,6 +11,7 @@ const defaultDay = new Date("2021-06-01");
 
 const showDataForPlan = (name: string, day: Date) => {
     console.log(`Popup: name=${name} / day=${day}`)
+    ReactDOM.render(<PlanDataChart name={name} date={day}/>, document.getElementById("dashboard"))
 }
 
 const showMapOnDay = (day: Date) => {
