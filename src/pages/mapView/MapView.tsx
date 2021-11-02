@@ -19,6 +19,10 @@ const colormap = {
     "B19": "blue"
 }
 
+interface MapViewProps {
+    day: Date
+}
+
 const ZoomListener = (zoomChanged: (zoom: number) => void) => {
     const [zoom, setZoom] = useState(-1);
 
@@ -63,7 +67,7 @@ const chartData = (name, date) => {
     });
 }
 
-export const MapView = () => {
+export const MapView = ({day}: MapViewProps) => {
 
     return <MapContainer center={[51.1657, 10.4515]}
                          bounds={[[54.62129080028218, 3.790610177286792], [47.02321945431075, 14.842855458535878]]}
@@ -78,10 +82,10 @@ export const MapView = () => {
             icon={scaledIcon(.5, colormap[powerPlantData[name]["Energieträger"]])}
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
             <Popup>
-                <h1>{name}</h1>
+                <h1>Data from {name} for {dayjs(day).format("MMMM D YYYY")}</h1>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
                 <div className="popupContent">
-                    <AreaChart showGrid={false} data={chartData(name, "2021-06-02T00:00:00+02:00")}/>
+                    <AreaChart showGrid={false} data={chartData(name, dayjs(day).add(1, "day").format("YYYY-MM-DD[T][00]:mm:ssZ"))}/>
                 </div>
             </Popup>
         </Marker>)}
