@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as d3 from "d3";
 import {useEffect, useState} from "react";
-import {MapContainer, TileLayer, SVGOverlay, useMapEvents, Marker, Popup} from 'react-leaflet';
+import {MapContainer, TileLayer, useMapEvents, Marker, Popup} from 'react-leaflet';
 import {drawWindmill, createWindmillDefs, windmillViewbox} from "../components/drawWindmill";
 
 import "./mapView.scss";
@@ -31,6 +31,7 @@ const windmills = {
 
 const prepareWindmill = (name: string) => {
     const svg = d3.select(`svg.${name}`)
+        .attr("overflow", "visible")
         .attr("viewbox", `0 0 ${windmillViewbox.width} ${windmillViewbox.height}`);
     createWindmillDefs(svg);
 }
@@ -78,11 +79,9 @@ export const MapView = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        <ZoomListener/>
-
-        {Object.keys(windmills).map((name, i) => <SVGOverlay key={i} className={name} bounds={[[windmills[name].lat - 5, windmills[name].long - 5], [windmills[name].lat + 5, windmills[name].long + 5]]}/>)}
-
-        {Object.keys(windmills).map((name, i) => <Marker key={i} position={[windmills[name].lat, windmills[name].long]}>
+        {Object.keys(windmills).map((name, i) => <Marker
+            key={i}
+            position={[windmills[name].lat, windmills[name].long]}>
             <Popup>
                 {name}
             </Popup>
