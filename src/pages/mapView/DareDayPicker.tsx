@@ -1,8 +1,10 @@
 import * as React from 'react';
 import {useState, useEffect} from "react";
 import DatePicker from "react-datepicker";
+import dayjs from "dayjs";
 
 import "react-datepicker/dist/react-datepicker.css";
+import "./DareDayPicker.scss";
 
 interface DareDayPickerProps {
     startDay: Date
@@ -16,9 +18,14 @@ export const DareDayPicker = ({startDay, dayChangedCallback}: DareDayPickerProps
         dayChangedCallback(selectedDay)
     }, [selectedDay])
 
-    return <DatePicker
-        minDate={new Date("2021-06-01")}
-        maxDate={new Date("2021-06-05 ")}
-        selected={selectedDay}
-        onChange={(day) => setSelectedDay(day)}/>
+    return <div className="titlemenu">
+        <h1>{dayjs(selectedDay).format("MMMM D YYYY")}</h1>
+        <div className="datepicker">
+            <DatePicker
+                minDate={new Date("2021-06-01")}
+                maxDate={new Date("2021-06-05 ")}
+                selected={selectedDay}
+                onChange={(day) => setSelectedDay(day)}/>
+        </div>
+    </div>
 }

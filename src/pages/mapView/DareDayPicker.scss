@@ -1,0 +1,10 @@
+.titlemenu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  & .datepicker {
+    max-width: 40%;
+    margin-right: 2em;
+  }
+}
