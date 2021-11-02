@@ -18,6 +18,7 @@ const colormap = {
 
 interface MapViewProps {
     day: Date
+    popupOpenedCallback: (name: string, day: Date) => void
 }
 
 const ZoomListener = (zoomChanged: (zoom: number) => void) => {
@@ -37,7 +38,7 @@ const ZoomListener = (zoomChanged: (zoom: number) => void) => {
     return null;
 }
 
-export const MapView = ({day}: MapViewProps) => {
+export const MapView = ({day, popupOpenedCallback}: MapViewProps) => {
 
     return <MapContainer center={[51.1657, 10.4515]}
                          bounds={[[54.62129080028218, 3.790610177286792], [47.02321945431075, 14.842855458535878]]}
@@ -51,7 +52,7 @@ export const MapView = ({day}: MapViewProps) => {
             key={i}
             icon={scaledIcon(.5, colormap[powerPlantData[name]["Energieträger"]])}
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
-            <Popup onOpen={() => console.log(`Popup: ${name}`)}>
+            <Popup onOpen={() => popupOpenedCallback(name, day)}>
                 <h3>Data from {name} for {dayjs(day).format("MMMM D YYYY")}</h3>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
                 <PlanDataChart name={name} date={day}/>

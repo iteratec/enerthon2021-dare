@@ -9,8 +9,12 @@ document.getElementById("title").innerText = "Map View";
 
 const defaultDay = new Date("2021-06-01");
 
+const showDataForPlan = (name: string, day: Date) => {
+    console.log(`Popup: name=${name} / day=${day}`)
+}
+
 const showMapOnDay = (day: Date) => {
-    ReactDOM.render(<MapView day={day}/>, document.getElementById("map"));
+    ReactDOM.render(<MapView day={day} popupOpenedCallback={showDataForPlan}/>, document.getElementById("map"));
 }
 
 ReactDOM.render(<DareDayPicker
