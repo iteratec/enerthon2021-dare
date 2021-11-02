@@ -1,6 +1,12 @@
 import * as d3 from "d3";
 
 import "./windmill.scss";
+import {control} from "leaflet";
+
+export const windmillViewbox = {
+    width: 714,
+    height: 797
+}
 
 const createPole = (root: any) => {
     const pole = root.append("g")
@@ -101,10 +107,15 @@ const createAs = (root: any) => {
         .attr("xlink:href", "#path-8")
 }
 
-export const drawWindmill = (id: string, parentSelector: string, x: number, y: number) => {
-    const root = d3.selectAll(parentSelector).append("g").attr("id", id)
+export const drawWindmill = (id: string, parentSelector: string, scale: number) => {
+    const root = d3.selectAll(parentSelector)
+        .append("svg")
         .attr("class", "windmill")
-        .attr("transform", `translate(${x},${y}) scale(0.1 0.1)`);
+        .attr("x", "25%")
+        .attr("y", "20%")
+        .append("g").attr("id", id)
+        .attr("class", "windmill")
+        .attr("transform", `scale(${scale} ${scale})`);
 
     createPole(root);
     createWieken(root);
