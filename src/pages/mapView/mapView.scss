@@ -8,22 +8,3 @@
   fill: none;
   fill-rule: evenodd;
 }
-
-.powerplant-table {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background-color: #cccccc;
-  padding: .5em;
-  & .powerplant-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border-bottom: 1px solid white;
-
-    & .powerplant-row-header {
-      font-weight: bolder;
-      margin-right: 1em;
-    }
-  }
-}

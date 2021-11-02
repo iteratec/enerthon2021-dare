@@ -1,13 +1,10 @@
 import * as React from 'react';
-import * as d3 from "d3";
 import {useEffect, useState} from "react";
 import {MapContainer, TileLayer, useMapEvents, Marker, Popup} from 'react-leaflet';
-import {drawWindmill, createWindmillDefs, windmillViewbox} from "../components/drawWindmill";
 import {scaledIcon} from "../marker/leaflet-color-markers";
+import {PowerPlantTable} from "./PowerPlantTable";
 
 import {powerPlantData} from "./powerPlantData";
-
-const greenIcon = scaledIcon(0.5, "green");
 
 import "./mapView.scss";
 
@@ -15,21 +12,6 @@ const colormap = {
     "B01": "orange",
     "B16": "yellow",
     "B19": "blue"
-}
-const prepareWindmill = (name: string) => {
-    const svg = d3.select(`svg.${name}`)
-        .attr("overflow", "visible")
-        .attr("viewbox", `0 0 ${windmillViewbox.width} ${windmillViewbox.height}`);
-    createWindmillDefs(svg);
-}
-
-const removeWindmill = (name: string) => {
-    d3.select(`svg.${name} svg.windmill`).remove();
-}
-
-const createWindmill = (name: string, zoom: number) => {
-    const START_SCALE = 0.1;
-    drawWindmill(`id-${name}`, `svg.${name}`, zoom > 0 ? START_SCALE * zoom/5 : START_SCALE)
 }
 
 const ZoomListener = (zoomChanged: (zoom: number) => void) => {
@@ -63,13 +45,9 @@ export const MapView = () => {
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
             <Popup>
                 <h1>{name}</h1>
-                <div className="powerplant-table">
-                    {Object.keys(powerPlantData[name]).map((attr, i) => <div key={i} className="powerplant-row">
-                        <div className="powerplant-row-header">{attr}:</div>
-                        <div className="powerplant-row-cell">{powerPlantData[name][attr]}</div>
-                    </div>)}
-                </div>
+                <PowerPlantTable powerPlantData={powerPlantData[name]}/>
             </Popup>
         </Marker>)}
     </MapContainer>
 }
+
