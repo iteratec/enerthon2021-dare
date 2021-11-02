@@ -3,6 +3,7 @@ import * as ReactDOM from "react-dom"
 
 import {MapView} from "./MapView";
 import {DareDayPicker} from "./DareDayPicker";
+import {PlanDataChart} from "./PlanDataChart";
 
 document.getElementById("title").innerText = "Map View";
 

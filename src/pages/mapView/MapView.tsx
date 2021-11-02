@@ -7,10 +7,6 @@ import {PlanDataChart} from "./PlanDataChart";
 
 import {powerPlantData} from "./powerPlantData";
 
-import {timeseriesData} from "./timeseriesData"
-
-import {AreaChart} from "react-charts-d3";
-
 import "./mapView.scss";
 import dayjs from "dayjs";
 
@@ -41,33 +37,6 @@ const ZoomListener = (zoomChanged: (zoom: number) => void) => {
     return null;
 }
 
-const chartData = (name, date) => {
-    const dateObj = dayjs(date)
-    const plant = timeseriesData[name];
-    const timeseries = plant[date].data;
-
-    const dataMap = {};
-    Object.entries(timeseries).forEach((series) => {
-        const xValue = dateObj.add(15 * (+series[0] - 1), 'minute')
-        const yValues = series[1];
-
-        Object.entries(yValues).forEach((yValue) => {
-            if (yValue[0]) {
-                const d = {x: xValue.format('H:mm'), y: +yValue[1]}
-                const group = dataMap[yValue[0]]
-                if (group) {
-                    group.push(d);
-                } else {
-                    dataMap[yValue[0]] = [d]
-                }
-            }
-        });
-    })
-    return Object.keys(dataMap).map((group) => {
-        return {key: group, values: dataMap[group]}
-    });
-}
-
 export const MapView = ({day}: MapViewProps) => {
 
     return <MapContainer center={[51.1657, 10.4515]}
@@ -82,7 +51,7 @@ export const MapView = ({day}: MapViewProps) => {
             key={i}
             icon={scaledIcon(.5, colormap[powerPlantData[name]["Energieträger"]])}
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
-            <Popup>
+            <Popup onOpen={() => console.log(`Popup: ${name}`)}>
                 <h3>Data from {name} for {dayjs(day).format("MMMM D YYYY")}</h3>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
                 <PlanDataChart name={name} date={day}/>
