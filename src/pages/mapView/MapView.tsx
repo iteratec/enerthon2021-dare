@@ -6,6 +6,8 @@ import {PowerPlantTable} from "./PowerPlantTable";
 
 import {powerPlantData} from "./powerPlantData";
 
+import {timeseriesData} from "./timeseriesData"
+
 import {AreaChart} from "react-charts-d3";
 
 import "./mapView.scss";
@@ -34,13 +36,19 @@ const ZoomListener = (zoomChanged: (zoom: number) => void) => {
     return null;
 }
 
-const chartData = (name) => {
-    const date = dayjs(windmills[name].date)
+const chartData = (name, date) => {
+    const dateObj = dayjs(date)
+
+    const plant = timeseriesData[name];
+    const timeseries = plant[date][0].data;
+
+    console.log(timeseries)
+
     const values = [{
         key: name,
         values:
-            Object.entries(windmills[name].data).map((d) => {
-                const timestamp = date.add(15 * (+d[0] - 1), 'minute');
+            Object.entries(timeseries).map((d) => {
+                const timestamp = dateObj.add(15 * (+d[0] - 1), 'minute');
                 return {"x": timestamp.format('H:mm'), "y": +d[1]};
             })
     }];
@@ -58,7 +66,9 @@ const popupContent = {
 
 export const MapView = () => {
 
-    return <MapContainer center={[51.1657, 10.4515]} bounds={[[54.62129080028218, 3.790610177286792], [47.02321945431075, 14.842855458535878]]} scrollWheelZoom={false}>
+    return <MapContainer center={[51.1657, 10.4515]}
+                         bounds={[[54.62129080028218, 3.790610177286792], [47.02321945431075, 14.842855458535878]]}
+                         scrollWheelZoom={false}>
         <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -71,7 +81,9 @@ export const MapView = () => {
             <Popup>
                 <h1>{name}</h1>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
-                <AreaChart data={chartData(name)}/>
+                <div style={popupContent}>
+                    <AreaChart data={chartData(name, "2021-06-02T00:00:00+02:00")}/>
+                </div>
             </Popup>
         </Marker>)}
     </MapContainer>
