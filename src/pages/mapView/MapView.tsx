@@ -76,8 +76,8 @@ export const MapView = () => {
                          bounds={[[54.62129080028218, 3.790610177286792], [47.02321945431075, 14.842855458535878]]}
                          scrollWheelZoom={false}>
         <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
         {Object.keys(powerPlantData).map((name, i) => <Marker
