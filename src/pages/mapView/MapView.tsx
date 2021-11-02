@@ -38,23 +38,29 @@ const ZoomListener = (zoomChanged: (zoom: number) => void) => {
 
 const chartData = (name, date) => {
     const dateObj = dayjs(date)
-
     const plant = timeseriesData[name];
-    const timeseries = plant[date][0].data;
+    const timeseries = plant[date].data;
 
-    console.log(timeseries)
+    const dataMap = {};
+    Object.entries(timeseries).forEach((series) => {
+        const xValue = dateObj.add(15 * (+series[0] - 1), 'minute')
+        const yValues = series[1];
 
-    const values = [{
-        key: name,
-        values:
-            Object.entries(timeseries).map((d) => {
-                const timestamp = dateObj.add(15 * (+d[0] - 1), 'minute');
-                return {"x": timestamp.format('H:mm'), "y": +d[1]};
-            })
-    }];
-
-    console.log(values)
-    return values;
+        Object.entries(yValues).forEach((yValue) => {
+            if (yValue[0]) {
+                const d = {x: xValue.format('H:mm'), y: +yValue[1]}
+                const group = dataMap[yValue[0]]
+                if (group) {
+                    group.push(d);
+                } else {
+                    dataMap[yValue[0]] = [d]
+                }
+            }
+        });
+    })
+    return Object.keys(dataMap).map((group) => {
+        return {key: group, values: dataMap[group]}
+    });
 }
 
 const popupContent = {
@@ -82,7 +88,7 @@ export const MapView = () => {
                 <h1>{name}</h1>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
                 <div style={popupContent}>
-                    <AreaChart data={chartData(name, "2021-06-02T00:00:00+02:00")}/>
+                    <AreaChart showGrid={false} data={chartData(name, "2021-06-02T00:00:00+02:00")}/>
                 </div>
             </Popup>
         </Marker>)}
