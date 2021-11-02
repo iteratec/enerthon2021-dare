@@ -63,9 +63,12 @@ export const MapView = () => {
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
             <Popup>
                 <h1>{name}</h1>
-                <ul>
-                    {Object.keys(powerPlantData[name]).map((attr, i) => <li>{attr}: {powerPlantData[name][attr]}</li>)}
-                </ul>
+                <div className="powerplant-table">
+                    {Object.keys(powerPlantData[name]).map((attr, i) => <div key={i} className="powerplant-row">
+                        <div className="powerplant-row-header">{attr}:</div>
+                        <div className="powerplant-row-cell">{powerPlantData[name][attr]}</div>
+                    </div>)}
+                </div>
             </Popup>
         </Marker>)}
     </MapContainer>
