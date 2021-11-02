@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {MapContainer, TileLayer, useMapEvents, Marker, Popup} from 'react-leaflet';
 import {scaledIcon} from "../marker/leaflet-color-markers";
 import {PowerPlantTable} from "./PowerPlantTable";
-import {PlanDataChart} from "./PlanDataChart";
 
 import {powerPlantData} from "./powerPlantData";
 
@@ -55,7 +54,6 @@ export const MapView = ({day, popupOpenedCallback}: MapViewProps) => {
             <Popup onOpen={() => popupOpenedCallback(name, day)}>
                 <h3>Data from {name} for {dayjs(day).format("MMMM D YYYY")}</h3>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
-                <PlanDataChart name={name} date={day}/>
             </Popup>
         </Marker>)}
     </MapContainer>
