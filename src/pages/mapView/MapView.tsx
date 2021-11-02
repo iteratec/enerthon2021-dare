@@ -1,32 +1,32 @@
 import * as React from 'react';
 import * as d3 from "d3";
 import {useEffect, useState} from "react";
-import { MapContainer, TileLayer, SVGOverlay, useMapEvents } from 'react-leaflet';
+import {MapContainer, TileLayer, SVGOverlay, useMapEvents, Marker, Popup} from 'react-leaflet';
 import {drawWindmill, createWindmillDefs} from "../components/drawWindmill";
 
 import "./mapView.scss";
 
 const windmills = {
-    CSR1WIND001: {
-        lat: 41.335162,
-        long: 9.753427
-    },
+    // CSR1WIND001: {
+    //     lat: 41.335162,
+    //     long: 9.753427
+    // },
     CSR1WIND002: {
         lat: 49.602228,
         long: 9.61516
     },
-    CSR1WIND008: {
-        lat: 49.059187,
-        long: 9.788426
-    },
-    CSR1WIND011: {
-        lat: 47.70819,
-        long: 7.926348
-    },
-    CSR1WIND014: {
-        lat: 48.928871,
-        long: 10.273493
-    },
+    // CSR1WIND008: {
+    //     lat: 49.059187,
+    //     long: 9.788426
+    // },
+    // CSR1WIND011: {
+    //     lat: 47.70819,
+    //     long: 7.926348
+    // },
+    // CSR1WIND014: {
+    //     lat: 48.928871,
+    //     long: 10.273493
+    // },
 }
 
 const prepareWindmill = (name: string) => {
@@ -80,5 +80,11 @@ export const MapView = () => {
         <ZoomListener/>
 
         {Object.keys(windmills).map((name, i) => <SVGOverlay key={i} className={name} bounds={[[windmills[name].lat - 5, windmills[name].long - 5], [windmills[name].lat + 5, windmills[name].long + 5]]}/>)}
+
+        {Object.keys(windmills).map((name, i) => <Marker key={i} position={[windmills[name].lat, windmills[name].long]}>
+            <Popup>
+                {name}
+            </Popup>
+        </Marker>)}
     </MapContainer>
 }
