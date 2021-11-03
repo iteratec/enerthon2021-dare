@@ -1,10 +1,13 @@
 import * as React from 'react';
 import {useEffect, useState} from "react";
 import {MapContainer, TileLayer, useMapEvents, Marker, Popup} from 'react-leaflet';
+import dayjs from "dayjs";
+
 import {scaledIcon} from "../marker/leaflet-color-markers";
 import {PowerPlantTable} from "./PowerPlantTable";
 
 import {powerPlantData} from "./powerPlantData";
+import {activationData} from "./activationData";
 
 import "./mapView.scss";
 
@@ -37,6 +40,16 @@ const ZoomListener = (zoomChanged: (zoom: number) => void) => {
     return null;
 }
 
+const isActiveted = (name: string, day: Date): boolean => {
+    const data = activationData[name];
+    if(data) {
+        const dayStr = dayjs(day).format("YYYY-MM-DD");
+        return (data[dayStr] != undefined);
+    }
+
+    return false;
+}
+
 export const MapView = ({day, popupOpenedCallback, selectedName}: MapViewProps) => {
     const markerRefs: {[key: string] : any}[] = [];
 
@@ -51,7 +64,7 @@ export const MapView = ({day, popupOpenedCallback, selectedName}: MapViewProps) 
         {Object.keys(powerPlantData).map((name, i) => <Marker
             ref = {ref => markerRefs[name] = ref}
             key={i}
-            icon={scaledIcon(.5, colormap[powerPlantData[name]["Energieträger"]])}
+            icon={scaledIcon(isActiveted(name, day) ? 1 : 0.5, colormap[powerPlantData[name]["Energieträger"]])}
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
             <Popup onOpen={() => popupOpenedCallback(name, day)}>
                 <h3>{name}</h3>
