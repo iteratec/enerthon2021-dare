@@ -13,6 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "homepage": "https://owidder.github.io/dare/build",
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@types/d3": "^7.1.0",
