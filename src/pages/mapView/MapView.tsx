@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {useEffect, useState} from "react";
 import {MapContainer, TileLayer, useMapEvents, Marker, Popup} from 'react-leaflet';
-import dayjs from "dayjs";
 
 import {scaledIcon} from "../marker/leaflet-color-markers";
 import {PowerPlantTable} from "./PowerPlantTable";
 
 import {powerPlantData} from "./powerPlantData";
-import {activationData} from "./activationData";
 
 import "./mapView.scss";
 
@@ -19,8 +17,8 @@ const colormap = {
 
 interface MapViewProps {
     day: Date
-    selectedName: string
-    popupOpenedCallback: (name: string, day: Date) => void
+    highlightedNames?: string[]
+    popupOpenedCallback?: (name: string, day: Date) => void
 }
 
 const ZoomListener = (zoomChanged: (zoom: number) => void) => {
@@ -40,21 +38,11 @@ const ZoomListener = (zoomChanged: (zoom: number) => void) => {
     return null;
 }
 
-const isActiveted = (name: string, day: Date): boolean => {
-    const data = activationData[name];
-    if(data) {
-        const dayStr = dayjs(day).format("YYYY-MM-DD");
-        return (data[dayStr] != undefined);
-    }
-
-    return false;
-}
-
-export const MapView = ({day, popupOpenedCallback, selectedName}: MapViewProps) => {
+export const MapView = ({day, popupOpenedCallback, highlightedNames}: MapViewProps) => {
     const markerRefs: {[key: string] : any}[] = [];
 
-    return <MapContainer center={[51.1657, 10.4515]}
-                         bounds={[[54.62129080028218, 3.790610177286792], [47.02321945431075, 14.842855458535878]]}
+    return <MapContainer center={[48.72136522068032, 9.700661146305457]}
+                         bounds={[[49.931892920919836, 6.48161423248249], [47.28561741177902, 11.458964082427245]]}
                          scrollWheelZoom={false}>
         <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
@@ -64,9 +52,13 @@ export const MapView = ({day, popupOpenedCallback, selectedName}: MapViewProps) 
         {Object.keys(powerPlantData).map((name, i) => <Marker
             ref = {ref => markerRefs[name] = ref}
             key={i}
-            icon={scaledIcon(isActiveted(name, day) ? 1 : 0.5, colormap[powerPlantData[name]["Energieträger"]])}
+            icon={scaledIcon((highlightedNames && highlightedNames.indexOf(name)) > -1 ? 1 : 0.5, colormap[powerPlantData[name]["Energieträger"]])}
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
-            <Popup onOpen={() => popupOpenedCallback(name, day)}>
+            <Popup onOpen={() => {
+                if(popupOpenedCallback) {
+                    popupOpenedCallback(name, day)
+                }
+            }}>
                 <h3>{name}</h3>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
             </Popup>

@@ -9,8 +9,8 @@ export const powerPlantData = {
         "MasterNr. TR": "SEE925854856361",
         "Klarname TR": "WEA1",
         "TR-ID": "D1000000011",
-        "Lon": 9.7534265518,
-        "Lat": 41.3351631165,
+        "Lon": 9.87187955339822,
+        "Lat": 49.438095512288,
         "Nettonennleistung (TRs) in kW": 3450.0
     },
     "Wind002": {
@@ -23,8 +23,8 @@ export const powerPlantData = {
         "MasterNr. TR": "SEE931136456792",
         "Klarname TR": "WEA1",
         "TR-ID": "D1000000012",
-        "Lon": 9.6151599884,
-        "Lat": 49.6022262573,
+        "Lon": 9.6125880522192,
+        "Lat": 49.5997354676298,
         "Nettonennleistung (TRs) in kW": 3300.0
     },
     "Sun003": {
@@ -79,8 +79,8 @@ export const powerPlantData = {
         "MasterNr. TR": "SEE991569113532",
         "Klarname TR": "BHKW2",
         "TR-ID": "D1000000016",
-        "Lon": 8.6020174026,
-        "Lat": 48.0172424316,
+        "Lon": 9.05250462656125,
+        "Lat": 48.8684821466315,
         "Nettonennleistung (TRs) in kW": 500.0
     },
     "Bio007": {
@@ -163,8 +163,8 @@ export const powerPlantData = {
         "MasterNr. TR": "SEE937278954509",
         "Klarname TR": "BHKW-1",
         "TR-ID": "D1000000033",
-        "Lon": 13.1441440582,
-        "Lat": 52.7703399658,
+        "Lon": 8.75331112714512,
+        "Lat": 47.9038345881355,
         "Nettonennleistung (TRs) in kW": 525.0
     },
     "Bio013": {
