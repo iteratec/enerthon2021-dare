@@ -2,6 +2,11 @@ import * as d3 from "d3";
 
 import "./windmill.scss";
 
+export const windmillViewbox = {
+    width: 714,
+    height: 797
+}
+
 const createPole = (root: any) => {
     const pole = root.append("g")
         .attr("id", "pole")
@@ -33,7 +38,7 @@ const createWieken = (root: any) => {
 
     wieken.append("use")
         .attr("stroke", "#979797")
-        .attr("maske", "url(#mask-4)")
+        .attr("mask", "url(#mask-4)")
         .attr("stroke-width", "2")
         .attr("fill", "#D8D8D8")
         .attr("opacity", "0")
@@ -101,10 +106,14 @@ const createAs = (root: any) => {
         .attr("xlink:href", "#path-8")
 }
 
-export const drawWindmill = (id: string, parentSelector: string, x: number, y: number) => {
-    const root = d3.selectAll(parentSelector).append("g").attr("id", id)
+export const drawWindmill = (id: string, parentSelector: string, scale: number) => {
+    const root = d3.selectAll(parentSelector)
+        .append("svg")
+        .attr("overflow", "visible")
         .attr("class", "windmill")
-        .attr("transform", `scale(0.2 0.2) translate(${x},${y})`);
+        .append("g").attr("id", id)
+        .attr("class", "windmill")
+        .attr("transform", `translate(100, 100) scale(${scale} ${scale})`);
 
     createPole(root);
     createWieken(root);

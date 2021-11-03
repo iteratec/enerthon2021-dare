@@ -1,33 +1,62 @@
 import * as React from 'react';
-import * as d3 from "d3";
-import {useEffect} from "react";
-import { MapContainer, TileLayer, Marker, Popup, SVGOverlay } from 'react-leaflet';
-import {drawWindmill, createWindmillDefs} from "../components/drawWindmill";
+import {useEffect, useState} from "react";
+import {MapContainer, TileLayer, useMapEvents, Marker, Popup} from 'react-leaflet';
+import {scaledIcon} from "../marker/leaflet-color-markers";
+import {PowerPlantTable} from "./PowerPlantTable";
+
+import {powerPlantData} from "./powerPlantData";
 
 import "./mapView.scss";
 
-export const MapView = () => {
+const colormap = {
+    "B01": "orange",
+    "B16": "yellow",
+    "B19": "blue"
+}
+
+interface MapViewProps {
+    day: Date
+    selectedName: string
+    popupOpenedCallback: (name: string, day: Date) => void
+}
+
+const ZoomListener = (zoomChanged: (zoom: number) => void) => {
+    const [zoom, setZoom] = useState(-1);
 
     useEffect(() => {
-        setTimeout(() => {
-            const svg = d3.select("svg.leaflet-image-layer");
-            createWindmillDefs(svg);
-            svg.append("g").attr("id", "maproot");
+        zoomChanged(zoom)
+    }, [zoom])
 
-            d3.select("#maproot")
-                .append("g")
-                .attr("id", "windmillroot");
-            drawWindmill("windmill-1", "#windmillroot", 200, 200)
-
-        })
+    const mapEvents = useMapEvents({
+        zoomend: () => {
+            console.log(mapEvents.getZoom());
+            setZoom(mapEvents.getZoom())
+        }
     })
 
-    return <MapContainer center={[49.602228, 9.61516]} zoom={10} scrollWheelZoom={false}>
+    return null;
+}
+
+export const MapView = ({day, popupOpenedCallback, selectedName}: MapViewProps) => {
+    const markerRefs: {[key: string] : any}[] = [];
+
+    return <MapContainer center={[51.1657, 10.4515]}
+                         bounds={[[54.62129080028218, 3.790610177286792], [47.02321945431075, 14.842855458535878]]}
+                         scrollWheelZoom={false}>
         <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
-        <SVGOverlay attributes={{ stroke: 'red' }} bounds={[[49, 9], [50, 10]]}>
-        </SVGOverlay>
+
+        {Object.keys(powerPlantData).map((name, i) => <Marker
+            ref = {ref => markerRefs[name] = ref}
+            key={i}
+            icon={scaledIcon(.5, colormap[powerPlantData[name]["Energieträger"]])}
+            position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
+            <Popup onOpen={() => popupOpenedCallback(name, day)}>
+                <h3>{name}</h3>
+                <PowerPlantTable powerPlantData={powerPlantData[name]}/>
+            </Popup>
+        </Marker>)}
     </MapContainer>
 }

@@ -1,3 +1,18 @@
 .leaflet-container {
-  height: 100vh;
+  height: 100%;
+}
+
+.windmill {
+  stroke: black;
+  stroke-width: 3px;
+  fill: none;
+  fill-rule: evenodd;
+}
+
+.popupContent {
+  text-align: center;
+  height: 300px;
+  width: 300px;
+  margin-top: 30px;
+
 }

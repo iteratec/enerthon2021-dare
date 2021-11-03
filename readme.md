@@ -3,4 +3,4 @@
 2. cd dare
 3. npm install
 4. npm run start
-5. http://localhost:9000/powerPlants/powerPlants.html
+5. http://localhost:9000/mapView/mapView.html

@@ -44,8 +44,11 @@
   },
   "dependencies": {
     "d3": "^7.1.1",
+    "dayjs": "^1.10.7",
     "leaflet": "^1.7.1",
     "react": "^17.0.2",
+    "react-charts-d3": "^2.4.1",
+    "react-datepicker": "^4.3.0",
     "react-dom": "^17.0.2",
     "react-leaflet": "^3.2.2"
   }
