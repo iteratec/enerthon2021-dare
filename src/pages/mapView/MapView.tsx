@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {MapContainer, TileLayer, useMapEvents, Marker, Popup} from 'react-leaflet';
 
 import {scaledIcon} from "../marker/leaflet-color-markers";
@@ -21,17 +21,14 @@ interface MapViewProps {
     popupOpenedCallback?: (name: string, day: Date) => void
 }
 
-const ZoomListener = (zoomChanged: (zoom: number) => void) => {
-    const [zoom, setZoom] = useState(-1);
+interface ZoomListenerProps {
+    zoomChangedCallback: (zoom: number) => void
+}
 
-    useEffect(() => {
-        zoomChanged(zoom)
-    }, [zoom])
-
+const ZoomListener = ({zoomChangedCallback}: ZoomListenerProps) => {
     const mapEvents = useMapEvents({
         zoomend: () => {
-            console.log(mapEvents.getZoom());
-            setZoom(mapEvents.getZoom())
+            zoomChangedCallback(mapEvents.getZoom());
         }
     })
 
@@ -39,7 +36,13 @@ const ZoomListener = (zoomChanged: (zoom: number) => void) => {
 }
 
 export const MapView = ({day, popupOpenedCallback, highlightedNames}: MapViewProps) => {
+    const [markerSize, setMarkerSize] = useState(.5);
+
     const markerRefs: {[key: string] : any}[] = [];
+
+    const newZoom = (zoom: number) => {
+        setMarkerSize(.5 * zoom / 8)
+    }
 
     return <MapContainer center={[48.72136522068032, 9.700661146305457]}
                          bounds={[[49.931892920919836, 6.48161423248249], [47.28561741177902, 11.458964082427245]]}
@@ -49,10 +52,12 @@ export const MapView = ({day, popupOpenedCallback, highlightedNames}: MapViewPro
             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
+        <ZoomListener zoomChangedCallback={newZoom}/>
+
         {Object.keys(powerPlantData).map((name, i) => <Marker
             ref = {ref => markerRefs[name] = ref}
             key={i}
-            icon={scaledIcon((highlightedNames && highlightedNames.indexOf(name)) > -1 ? 1 : 0.5, colormap[powerPlantData[name]["Energieträger"]])}
+            icon={scaledIcon((highlightedNames && highlightedNames.indexOf(name)) > -1 ? markerSize*2 : markerSize, colormap[powerPlantData[name]["Energieträger"]])}
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
             <Popup onOpen={() => {
                 if(popupOpenedCallback) {
