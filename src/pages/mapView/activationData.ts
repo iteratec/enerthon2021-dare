@@ -1,5 +1,6 @@
 export const activationData = {
     "Wind001": {
+        type: "down",
         "2021-06-01": {
             51: 1.5,
             52: 1.5,
@@ -98,6 +99,7 @@ export const activationData = {
         },
     },
     "Wind002": {
+        type: "down",
         "2021-06-05": {
             51: 1.5,
             52: 1.5,
@@ -148,6 +150,7 @@ export const activationData = {
         }
     },
     "Sonn003": {
+        type: "down",
         "2021-06-02": {
             37: 0,
             38: 0,
@@ -160,6 +163,7 @@ export const activationData = {
         }
     },
     "Bio006": {
+        type: "up",
         "2021-06-05": {
             1: 0.5,
             2: 0.5,
@@ -194,6 +198,7 @@ export const activationData = {
         }
     },
     "Wind008": {
+        type: "down",
         "2021-06-02": {
             52: 0,
             53: 0,
@@ -227,6 +232,7 @@ export const activationData = {
         }
     },
     "Bio012": {
+        type: "up",
         "2021-06-03": {
             1: 0.525,
             2: 0.525,
@@ -255,6 +261,7 @@ export const activationData = {
         }
     },
     "Wind014": {
+        type: "down",
         "2021-06-04": {
             24: 0,
             25: 0,
@@ -296,6 +303,7 @@ export const activationData = {
         }
     },
     "Sonn016": {
+        type: "down",
         "2021-06-05": {
             50: 0,
             51: 0,
@@ -310,6 +318,7 @@ export const activationData = {
         }
     },
     "Sonn017": {
+        type: "down",
         "2021-06-05": {
             50: 0,
             51: 0,
@@ -320,6 +329,37 @@ export const activationData = {
             56: 0,
             57: 0,
             58: 0,
-            59: 0,}
+            59: 0,
+        }
     },
-}
+};
+
+const transformActivationData = () => {
+    let days = [];
+    Object.keys(activationData).forEach(kw => {
+        days = [...days, ...Object.keys(activationData[kw])];
+    });
+    days = Array.from(new Set(days)).filter((day) => day !== "type").sort();
+
+    return days.reduce((acc, day) => {
+        let dayRes = {};
+        Object.keys(activationData).forEach(kw => {
+            const kw_data = activationData[kw];
+            const dayData = kw_data[day];
+            if (dayData) {
+                Object.keys(dayData).forEach(quarter => {
+                    let quarterEntry = dayRes[quarter];
+                    if (!quarterEntry) {
+                        quarterEntry = [];
+                        dayRes[quarter] = quarterEntry;
+                    }
+
+                    quarterEntry.push({powerplant: kw, type: kw_data.type, power: dayData[quarter]});
+                });
+            }
+        });
+        return {...acc, [day]: dayRes}
+    }, {});
+};
+
+export const activationDataPerDay = transformActivationData();
