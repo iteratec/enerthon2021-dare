@@ -41,8 +41,8 @@ const ZoomListener = (zoomChanged: (zoom: number) => void) => {
 export const MapView = ({day, popupOpenedCallback, highlightedNames}: MapViewProps) => {
     const markerRefs: {[key: string] : any}[] = [];
 
-    return <MapContainer center={[51.1657, 10.4515]}
-                         bounds={[[54.62129080028218, 3.790610177286792], [47.02321945431075, 14.842855458535878]]}
+    return <MapContainer center={[48.72136522068032, 9.700661146305457]}
+                         bounds={[[49.931892920919836, 6.48161423248249], [47.28561741177902, 11.458964082427245]]}
                          scrollWheelZoom={false}>
         <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
