@@ -18,7 +18,7 @@ const showDataForPlan = (name: string, day: Date) => {
 }
 
 const showMapOnDay = (day: Date) => {
-    ReactDOM.render(<MapView day={day} popupOpenedCallback={showDataForPlan}/>, document.getElementById("map"));
+    ReactDOM.render(<MapView day={day} popupOpenedCallback={showDataForPlan} selectedName={currentName}/>, document.getElementById("map"));
     if(currentName) {
         showDataForPlan(currentName, day);
     }

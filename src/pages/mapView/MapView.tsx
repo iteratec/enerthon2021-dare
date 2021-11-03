@@ -7,7 +7,6 @@ import {PowerPlantTable} from "./PowerPlantTable";
 import {powerPlantData} from "./powerPlantData";
 
 import "./mapView.scss";
-import dayjs from "dayjs";
 
 const colormap = {
     "B01": "orange",
@@ -17,6 +16,7 @@ const colormap = {
 
 interface MapViewProps {
     day: Date
+    selectedName: string
     popupOpenedCallback: (name: string, day: Date) => void
 }
 
@@ -37,7 +37,8 @@ const ZoomListener = (zoomChanged: (zoom: number) => void) => {
     return null;
 }
 
-export const MapView = ({day, popupOpenedCallback}: MapViewProps) => {
+export const MapView = ({day, popupOpenedCallback, selectedName}: MapViewProps) => {
+    const markerRefs: {[key: string] : any}[] = [];
 
     return <MapContainer center={[51.1657, 10.4515]}
                          bounds={[[54.62129080028218, 3.790610177286792], [47.02321945431075, 14.842855458535878]]}
@@ -48,14 +49,14 @@ export const MapView = ({day, popupOpenedCallback}: MapViewProps) => {
         />
 
         {Object.keys(powerPlantData).map((name, i) => <Marker
+            ref = {ref => markerRefs[name] = ref}
             key={i}
             icon={scaledIcon(.5, colormap[powerPlantData[name]["Energieträger"]])}
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
             <Popup onOpen={() => popupOpenedCallback(name, day)}>
-                <h3>Data from {name} for {dayjs(day).format("MMMM D YYYY")}</h3>
+                <h3>{name}</h3>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
             </Popup>
         </Marker>)}
     </MapContainer>
 }
-
