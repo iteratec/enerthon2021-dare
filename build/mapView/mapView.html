@@ -1,3 +1,35 @@
 <!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"><link href="https://fonts.googleapis.com/css?family=Mansalva&display=swap" rel="stylesheet"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/><link href="/leaflet.css" rel="stylesheet"><title id="title"></title><style>#container {
-            z-index: 0;
-        }</style><script defer="defer" src="../static/js/mapView.469b5505.js"></script><link href="../static/css/mapView.2f6cc9fa.css" rel="stylesheet"></head><body><div id="container"></div><script></script></body></html>
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-family: "Andale Mono";
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #menu {
+            flex-grow: 1;
+            z-index: 1000;
+            max-height: 3%;
+        }
+
+        #content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            flex-grow: 30;
+        }
+
+        #footer {
+            background-color: darkseagreen;
+            flex-grow: 4;
+        }
+
+        #map {
+            flex-grow: 20;
+        }
+
+        #dashboard {
+            background-color: lightblue;
+            flex-grow: 5;
+        }</style><script defer="defer" src="../static/js/mapView.21eb7517.js"></script><link href="../static/css/mapView.b9cf996a.css" rel="stylesheet"></head><body><div id="container"><div id="menu"><h1>DA / RE</h1></div><div id="content"><div id="map"></div><div id="dashboard">Dashboard</div></div><div id="footer">Footer</div></div><script></script></body></html>
