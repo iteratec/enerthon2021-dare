@@ -17,7 +17,7 @@ const colormap = {
 
 interface MapViewProps {
     day: Date
-    selectedNames?: string[]
+    highlightedNames?: string[]
     popupOpenedCallback: (name: string, day: Date) => void
 }
 
@@ -38,7 +38,7 @@ const ZoomListener = (zoomChanged: (zoom: number) => void) => {
     return null;
 }
 
-export const MapView = ({day, popupOpenedCallback, selectedNames}: MapViewProps) => {
+export const MapView = ({day, popupOpenedCallback, highlightedNames}: MapViewProps) => {
     const markerRefs: {[key: string] : any}[] = [];
 
     return <MapContainer center={[51.1657, 10.4515]}
@@ -52,7 +52,7 @@ export const MapView = ({day, popupOpenedCallback, selectedNames}: MapViewProps)
         {Object.keys(powerPlantData).map((name, i) => <Marker
             ref = {ref => markerRefs[name] = ref}
             key={i}
-            icon={scaledIcon((selectedNames && selectedNames.indexOf(name)) > -1 ? 1 : 0.5, colormap[powerPlantData[name]["Energieträger"]])}
+            icon={scaledIcon((highlightedNames && highlightedNames.indexOf(name)) > -1 ? 1 : 0.5, colormap[powerPlantData[name]["Energieträger"]])}
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
             <Popup onOpen={() => popupOpenedCallback(name, day)}>
                 <h3>{name}</h3>
