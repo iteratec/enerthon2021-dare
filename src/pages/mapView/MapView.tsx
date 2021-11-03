@@ -18,7 +18,7 @@ const colormap = {
 interface MapViewProps {
     day: Date
     highlightedNames?: string[]
-    popupOpenedCallback: (name: string, day: Date) => void
+    popupOpenedCallback?: (name: string, day: Date) => void
 }
 
 const ZoomListener = (zoomChanged: (zoom: number) => void) => {
@@ -54,7 +54,11 @@ export const MapView = ({day, popupOpenedCallback, highlightedNames}: MapViewPro
             key={i}
             icon={scaledIcon((highlightedNames && highlightedNames.indexOf(name)) > -1 ? 1 : 0.5, colormap[powerPlantData[name]["Energieträger"]])}
             position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
-            <Popup onOpen={() => popupOpenedCallback(name, day)}>
+            <Popup onOpen={() => {
+                if(popupOpenedCallback) {
+                    popupOpenedCallback(name, day)
+                }
+            }}>
                 <h3>{name}</h3>
                 <PowerPlantTable powerPlantData={powerPlantData[name]}/>
             </Popup>
