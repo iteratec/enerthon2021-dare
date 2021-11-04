@@ -149,7 +149,7 @@ export const activationData = {
             96: 1.5,
         }
     },
-    "Sonn003": {
+    "Sun003": {
         type: "down",
         "2021-06-02": {
             37: 0,
@@ -302,7 +302,7 @@ export const activationData = {
             60: 0,
         }
     },
-    "Sonn016": {
+    "Sun016": {
         type: "down",
         "2021-06-05": {
             50: 0,
@@ -317,7 +317,7 @@ export const activationData = {
             59: 0,
         }
     },
-    "Sonn017": {
+    "Sun017": {
         type: "down",
         "2021-06-05": {
             50: 0,
