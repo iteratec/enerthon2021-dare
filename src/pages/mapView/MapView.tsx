@@ -51,7 +51,7 @@ const PowerPlantMarker: React.FC<PowerPlantMarkerProps> = ({
         onOpenPopup(name);
     }, [name, onOpenPopup]);
     return (<Marker
-        icon={scaledIcon((highlightedNames && highlightedNames.indexOf(name)) > -1 ? markerSize * 2 : markerSize, colormap[powerPlantData[name]["Energieträger"]], name)}
+        icon={scaledIcon((highlightedNames && highlightedNames.indexOf(name)) > -1 ? markerSize * 3 : markerSize, colormap[powerPlantData[name]["Energieträger"]], name)}
         position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
         <Popup onOpen={popupOpenCallback}>
             <h3>{name}</h3>
