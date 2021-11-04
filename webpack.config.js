@@ -46,6 +46,7 @@ const common = {
             directory: path.join(__dirname, "public")
         },
         compress: true,
+        open: ["mapView/mapView.html"],
         port: 9000
     },
     module: {

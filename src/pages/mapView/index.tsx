@@ -1,5 +1,5 @@
-import * as React from "react"
-import * as ReactDOM from "react-dom"
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 
 import {MapView} from "./MapView";
 import {DareDayPicker} from "./DareDayPicker";
@@ -9,16 +9,27 @@ document.getElementById("title").innerText = "Map View";
 
 const defaultDay = new Date("2021-06-01");
 
+const MainApp: React.FC = () => {
+    const [selectedDay, setSelectedDay] = React.useState(defaultDay);
+    const [selectedPowerPlant, setSelectedPowerPlant] = React.useState<string>();
+    const [highlightedNames, setHighlightedNames] = React.useState<string[]>();
 
-const showDataForPlan = (name: string, day: Date) => {
-    ReactDOM.render(<PlanDataChart name={name} date={day}/>, document.getElementById("dashboard"));
-}
-
-const showMapOnDay = (day: Date) => {
-    ReactDOM.render(<MapView day={day} popupOpenedCallback={showDataForPlan}/>, document.getElementById("map"));
-}
-
-ReactDOM.render(<DareDayPicker
-    startDay={defaultDay}
-    dayChangedCallback={showMapOnDay}/>, document.getElementById("menu"));
-showMapOnDay(defaultDay);
+    return (
+        <>
+            <div id="menu">
+                <DareDayPicker
+                    startDay={defaultDay}
+                    dayChangedCallback={setSelectedDay}/>
+            </div>
+            <div id="content">
+                <div id="map">
+                    <MapView popupOpenedCallback={setSelectedPowerPlant} highlightedNames={highlightedNames}/>
+                </div>
+                <div id="dashboard">
+                    {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
+                </div>
+            </div>
+        </>
+    );
+};
+ReactDOM.render(<MainApp />, document.getElementById("container"));
