@@ -92,6 +92,7 @@ export const scaledIcon = (scale: number, color: string, name?: string) => {
 			shadowUrl = undefined;
 		} else if(name.startsWith("B")) {
 			iconUrl = "img/biogas.png";
+			shadowUrl = undefined;
 		} else if(name.startsWith("S")) {
 			iconUrl = "img/solar2.png";
 		}
