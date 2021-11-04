@@ -4,6 +4,7 @@ import * as ReactDOM from "react-dom";
 import {MapView} from "./MapView";
 import {DareDayPicker} from "./DareDayPicker";
 import {PlanDataChart} from "./PlanDataChart";
+import {ActivationTable} from "./ActivationTable";
 
 document.getElementById("title").innerText = "Map View";
 
@@ -27,6 +28,7 @@ const MainApp: React.FC = () => {
                 </div>
                 <div id="dashboard">
                     {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
+                    <ActivationTable day={selectedDay} />
                 </div>
             </div>
         </>

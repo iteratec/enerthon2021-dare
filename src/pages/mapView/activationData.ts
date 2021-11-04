@@ -334,7 +334,19 @@ export const activationData = {
     },
 };
 
-const transformActivationData = () => {
+interface ActivationEntry {
+    powerplant: string;
+    type: "up" | "down";
+    power: number;
+}
+
+export interface ActivationsPerDay {
+    [date: string]: {
+        [quarter: number]: ActivationEntry[]
+    };
+}
+
+const transformActivationData = (): ActivationsPerDay => {
     let days = [];
     Object.keys(activationData).forEach(kw => {
         days = [...days, ...Object.keys(activationData[kw])];
@@ -342,13 +354,13 @@ const transformActivationData = () => {
     days = Array.from(new Set(days)).filter((day) => day !== "type").sort();
 
     return days.reduce((acc, day) => {
-        let dayRes = {};
+        let dayRes: {[quarter: number]: ActivationEntry[]} = {};
         Object.keys(activationData).forEach(kw => {
             const kw_data = activationData[kw];
             const dayData = kw_data[day];
             if (dayData) {
                 Object.keys(dayData).forEach(quarter => {
-                    let quarterEntry = dayRes[quarter];
+                    let quarterEntry: ActivationEntry[] = dayRes[quarter];
                     if (!quarterEntry) {
                         quarterEntry = [];
                         dayRes[quarter] = quarterEntry;
@@ -358,8 +370,8 @@ const transformActivationData = () => {
                 });
             }
         });
-        return {...acc, [day]: dayRes}
+        return {...acc, [day]: dayRes};
     }, {});
 };
 
-export const activationDataPerDay = transformActivationData();
+export const activationDataPerDay: ActivationsPerDay = transformActivationData();
