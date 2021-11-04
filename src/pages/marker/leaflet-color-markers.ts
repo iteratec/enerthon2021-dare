@@ -81,13 +81,25 @@ export const blackIcon = new L.Icon({
 	shadowSize: [41, 41]
 });
 
-export const scaledIcon = (scale: number, color: string) => new L.Icon({
-	iconUrl: `img/marker-icon-2x-${color}.png`,
-	shadowUrl: 'img/marker-shadow.png',
-	iconSize: [25*scale, 41*scale],
-	iconAnchor: [12*scale, 41*scale],
-	popupAnchor: [1*scale, -34*scale],
-	shadowSize: [41*scale, 41*scale]
-});
+export const scaledIcon = (scale: number, color: string, name?: string) => {
+	let iconUrl = `img/marker-icon-2x-${color}.png`;
+	if(name) {
+		if(name.startsWith("W")) {
+			iconUrl = "img/windmill.png";
+		} else if(name.startsWith("B")) {
+			iconUrl = "img/biogas.png";
+		} else if(name.startsWith("S")) {
+			iconUrl = "img/solar2.png";
+		}
+	}
+	return new L.Icon({
+		iconUrl: iconUrl,
+		shadowUrl: 'img/marker-shadow.png',
+		iconSize: [25*scale, 41*scale],
+		iconAnchor: [12*scale, 41*scale],
+		popupAnchor: [1*scale, -34*scale],
+		shadowSize: [41*scale, 41*scale]
+	});
+}
 
 

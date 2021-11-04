@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {useState} from "react";
-import {MapContainer, TileLayer, useMapEvents, Marker, Popup} from 'react-leaflet';
+import {useState} from 'react';
+import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from 'react-leaflet';
 
 import {scaledIcon} from "../marker/leaflet-color-markers";
 import {PowerPlantTable} from "./PowerPlantTable";
@@ -13,16 +13,15 @@ const colormap = {
     "B01": "orange",
     "B16": "yellow",
     "B19": "blue"
-}
+};
 
 interface MapViewProps {
-    day: Date
-    highlightedNames?: string[]
-    popupOpenedCallback?: (name: string, day: Date) => void
+    highlightedNames?: string[];
+    popupOpenedCallback: (name: string) => void;
 }
 
 interface ZoomListenerProps {
-    zoomChangedCallback: (zoom: number) => void
+    zoomChangedCallback: (zoom: number) => void;
 }
 
 const ZoomListener = ({zoomChangedCallback}: ZoomListenerProps) => {
@@ -30,19 +29,43 @@ const ZoomListener = ({zoomChangedCallback}: ZoomListenerProps) => {
         zoomend: () => {
             zoomChangedCallback(mapEvents.getZoom());
         }
-    })
+    });
 
     return null;
+};
+
+interface PowerPlantMarkerProps {
+    name: string;
+    highlightedNames?: string[];
+    markerSize: number;
+    onOpenPopup: (name: string) => void;
 }
 
-export const MapView = ({day, popupOpenedCallback, highlightedNames}: MapViewProps) => {
+const PowerPlantMarker: React.FC<PowerPlantMarkerProps> = ({
+                                                               name,
+                                                               highlightedNames,
+                                                               markerSize,
+                                                               onOpenPopup
+                                                           }) => {
+    const popupOpenCallback = React.useCallback(() => {
+        onOpenPopup(name);
+    }, [name, onOpenPopup]);
+    return (<Marker
+        icon={scaledIcon((highlightedNames && highlightedNames.indexOf(name)) > -1 ? markerSize * 2 : markerSize, colormap[powerPlantData[name]["Energieträger"]], name)}
+        position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
+        <Popup onOpen={popupOpenCallback}>
+            <h3>{name}</h3>
+            <PowerPlantTable powerPlantData={powerPlantData[name]}/>
+        </Popup>
+    </Marker>);
+};
+
+export const MapView = ({popupOpenedCallback, highlightedNames}: MapViewProps) => {
     const [markerSize, setMarkerSize] = useState(.5);
 
-    const markerRefs: {[key: string] : any}[] = [];
-
-    const newZoom = (zoom: number) => {
-        setMarkerSize(.5 * zoom / 8)
-    }
+    const newZoom = React.useCallback((zoom: number) => {
+        setMarkerSize(.5 * zoom / 8);
+    }, []);
 
     return <MapContainer center={[48.72136522068032, 9.700661146305457]}
                          bounds={[[49.931892920919836, 6.48161423248249], [47.28561741177902, 11.458964082427245]]}
@@ -54,19 +77,11 @@ export const MapView = ({day, popupOpenedCallback, highlightedNames}: MapViewPro
 
         <ZoomListener zoomChangedCallback={newZoom}/>
 
-        {Object.keys(powerPlantData).map((name, i) => <Marker
-            ref = {ref => markerRefs[name] = ref}
-            key={i}
-            icon={scaledIcon((highlightedNames && highlightedNames.indexOf(name)) > -1 ? markerSize*2 : markerSize, colormap[powerPlantData[name]["Energieträger"]])}
-            position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
-            <Popup onOpen={() => {
-                if(popupOpenedCallback) {
-                    popupOpenedCallback(name, day)
-                }
-            }}>
-                <h3>{name}</h3>
-                <PowerPlantTable powerPlantData={powerPlantData[name]}/>
-            </Popup>
-        </Marker>)}
-    </MapContainer>
-}
+        {Object.keys(powerPlantData).map((name) => <PowerPlantMarker
+            key={name}
+            name={name}
+            markerSize={markerSize}
+            highlightedNames={highlightedNames}
+            onOpenPopup={popupOpenedCallback}/>)}
+    </MapContainer>;
+};
