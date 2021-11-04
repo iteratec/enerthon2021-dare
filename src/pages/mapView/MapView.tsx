@@ -61,10 +61,11 @@ const PowerPlantMarker: React.FC<PowerPlantMarkerProps> = ({
 };
 
 export const MapView = ({popupOpenedCallback, highlightedNames}: MapViewProps) => {
-    const [markerSize, setMarkerSize] = useState(.5);
+    const DEFAULT_MARKER_SIZE = 0.8;
+    const [markerSize, setMarkerSize] = useState(DEFAULT_MARKER_SIZE);
 
     const newZoom = React.useCallback((zoom: number) => {
-        setMarkerSize(.5 * zoom / 8);
+        setMarkerSize(DEFAULT_MARKER_SIZE * zoom / 8);
     }, []);
 
     return <MapContainer center={[48.72136522068032, 9.700661146305457]}
