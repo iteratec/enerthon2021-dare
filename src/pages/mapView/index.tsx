@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 import {MapView} from "./MapView";
 import {DareDayPicker} from "./DareDayPicker";
 import {PlanDataChart} from "./PlanDataChart";
-import {ActivationTable} from "./ActivationTable";
+import {ActivationTable, ActivationTableDataRow} from "./ActivationTable";
 
 document.getElementById("title").innerText = "Map View";
 
@@ -13,12 +13,7 @@ const defaultDay = new Date("2021-06-01");
 const MainApp: React.FC = () => {
     const [selectedDay, setSelectedDay] = React.useState(defaultDay);
     const [selectedPowerPlant, setSelectedPowerPlant] = React.useState<string>();
-    const [highlightedNames, setHighlightedNames] = React.useState<string[]>();
-
-    const activatedPowerplantsCallback = (powerplants: {powerplant: string}[]) => {
-        const names = powerplants.map(p => p.powerplant);
-        setHighlightedNames(names);
-    }
+    const [activatedPowerplants, setActivatedPowerplants] = React.useState<ActivationTableDataRow[]>();
 
     return (
         <>
@@ -29,11 +24,14 @@ const MainApp: React.FC = () => {
             </div>
             <div id="content">
                 <div id="map">
-                    <MapView popupOpenedCallback={setSelectedPowerPlant} highlightedNames={highlightedNames}/>
+                    <MapView popupOpenedCallback={setSelectedPowerPlant}
+                             highlightedPowerplants={activatedPowerplants ? activatedPowerplants.reduce((_highlightedPowerplants, activatedPowerplant) => {
+                                 return {..._highlightedPowerplants, [activatedPowerplant.powerplant]: activatedPowerplant.isUp ? "up" : (activatedPowerplant.isDown ? "down" : undefined)}
+                             }, {}) : undefined}/>
                 </div>
                 <div id="dashboard">
+                    <ActivationTable day={selectedDay} activatedPowerplantsCallback={setActivatedPowerplants}/>
                     {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
-                    <ActivationTable day={selectedDay} activatedPowerplantsCallback={activatedPowerplantsCallback}/>
                 </div>
             </div>
         </>
