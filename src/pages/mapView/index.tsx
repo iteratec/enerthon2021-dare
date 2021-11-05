@@ -27,8 +27,8 @@ const MainApp: React.FC = () => {
                     <MapView popupOpenedCallback={setSelectedPowerPlant} highlightedNames={highlightedNames}/>
                 </div>
                 <div id="dashboard">
-                    {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
                     <ActivationTable day={selectedDay} activatedPowerplantsCallback={setHighlightedNames}/>
+                    {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
                 </div>
             </div>
         </>
