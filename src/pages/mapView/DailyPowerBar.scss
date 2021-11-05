@@ -1,0 +1,17 @@
+.daily-power-bar {
+  display: flex;
+  min-height: 5px;
+  min-width: 48px;
+  align-items: stretch;
+  border-left: 1px solid #555555;
+  border-right: 1px solid #555555;
+
+  .power-bar-item {
+    flex: 1;
+    background-color: transparent;
+
+    &.filled {
+      background-color: #0078A8;
+    }
+  }
+}
