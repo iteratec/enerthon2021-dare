@@ -4,6 +4,7 @@ import {activationDataPerDay} from "./activationData";
 import dayjs from "dayjs";
 
 import "./ActivationTable.scss";
+import {SVG} from "../components/SVG";
 
 export interface ActivationTableProps {
     day: Date;
@@ -12,16 +13,27 @@ export interface ActivationTableProps {
 
 interface ActivationTableDataRow {
     powerplant: string;
+    isUp: boolean;
+    isDown: boolean;
 }
 
 const columns: Column<ActivationTableDataRow>[] = [
     {
         Header: 'Name',
         accessor: 'powerplant',
+    },
+    {
+        Header: 'Direction',
+        Cell: props => (
+            <span>
+                {props.row.original.isUp && <SVG name="arrow-top-right-bold-outline" className="activation-icon-up" />}
+                {props.row.original.isDown && <SVG name="arrow-down-right-bold-outline" className="activation-icon-down" />}
+            </span>
+        )
     }
 ];
 
-const activatedPowerPlants = (day: Date): { powerplant: string }[] => {
+const activatedPowerPlants = (day: Date): ActivationTableDataRow[] => {
     const currentDayString = dayjs(day).format("YYYY-MM-DD");
 
     const dailyActivations = activationDataPerDay[currentDayString];
@@ -32,8 +44,24 @@ const activatedPowerPlants = (day: Date): { powerplant: string }[] => {
     return Object.entries(dailyActivations).reduce<ActivationTableDataRow[]>((acc, [, activations]) => {
         let result: ActivationTableDataRow[] = acc;
         activations?.forEach((activation) => {
-            if (activation && !result.find((existing) => existing.powerplant === activation.powerplant)) {
-                result = [...result, {powerplant: activation.powerplant}];
+            if (activation) {
+                const existingActivationEntry = result.find((existing) => existing.powerplant === activation.powerplant);
+
+                if (existingActivationEntry) {
+                    if (!existingActivationEntry.isUp && activation.type === "up") {
+                        existingActivationEntry.isUp = true;
+                    }
+
+                    if (!existingActivationEntry.isDown && activation.type === "down") {
+                        existingActivationEntry.isDown = true;
+                    }
+                } else {
+                    result = [...result, {
+                        powerplant: activation.powerplant,
+                        isUp: activation.type === "up",
+                        isDown: activation.type === "down"
+                    }];
+                }
             }
         });
 

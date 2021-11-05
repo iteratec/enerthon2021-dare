@@ -39,4 +39,12 @@ table.activation-table {
   tbody:hover tr:hover {
     background-color: #7d7d7d;
   }
+
+  .activation-icon-up svg {
+    color: green;
+  }
+
+  .activation-icon-down svg {
+    color: #ce0000;
+  }
 }
