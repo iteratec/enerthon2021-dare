@@ -5,5 +5,5 @@
 * npm i
 * npm run build
 * git add -A
-* git commit -m "deploy `date`"
+* git commit -m "deploy \`date\`"
 * git push -u ghpages:ghpages
