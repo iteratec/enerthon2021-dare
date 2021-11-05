@@ -6,15 +6,15 @@ import dayjs from "dayjs";
 import "./ActivationTable.scss";
 import {SVG} from "../components/SVG";
 
-export interface ActivationTableProps {
-    day: Date;
-    activatedPowerplantsCallback: (powerplants: string[]) => void;
-}
-
-interface ActivationTableDataRow {
+export interface ActivationTableDataRow {
     powerplant: string;
     isUp: boolean;
     isDown: boolean;
+}
+
+interface ActivationTableProps {
+    day: Date;
+    activatedPowerplantsCallback: (powerplants: ActivationTableDataRow[]) => void;
 }
 
 const columns: Column<ActivationTableDataRow>[] = [
@@ -85,7 +85,7 @@ export const ActivationTable: React.FC<ActivationTableProps> = (props) => {
     });
 
     React.useEffect(() => {
-        props.activatedPowerplantsCallback(data.map((activation) => activation.powerplant));
+        props.activatedPowerplantsCallback(data);
     }, [data]);
 
     return (
