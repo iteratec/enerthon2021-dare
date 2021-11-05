@@ -7,7 +7,7 @@ import "./ActivationTable.scss";
 
 export interface ActivationTableProps {
     day: Date;
-    activatedPowerplantsCallback?: (powerplants: {powerplant: string}[]) => void
+    activatedPowerplantsCallback: (powerplants: string[]) => void;
 }
 
 interface ActivationTableDataRow {
@@ -21,7 +21,7 @@ const columns: Column<ActivationTableDataRow>[] = [
     }
 ];
 
-const activatedPowerPlants = (day: Date): {powerplant: string}[] => {
+const activatedPowerPlants = (day: Date): { powerplant: string }[] => {
     const currentDayString = dayjs(day).format("YYYY-MM-DD");
 
     const dailyActivations = activationDataPerDay[currentDayString];
@@ -29,7 +29,7 @@ const activatedPowerPlants = (day: Date): {powerplant: string}[] => {
         return [];
     }
 
-    const activations = Object.entries(dailyActivations).reduce<ActivationTableDataRow[]>((acc, [, activations]) => {
+    return Object.entries(dailyActivations).reduce<ActivationTableDataRow[]>((acc, [, activations]) => {
         let result: ActivationTableDataRow[] = acc;
         activations?.forEach((activation) => {
             if (activation && !result.find((existing) => existing.powerplant === activation.powerplant)) {
@@ -39,9 +39,7 @@ const activatedPowerPlants = (day: Date): {powerplant: string}[] => {
 
         return result;
     }, []);
-
-    return activations;
-}
+};
 
 export const ActivationTable: React.FC<ActivationTableProps> = (props) => {
     const data = React.useMemo<ActivationTableDataRow[]>(() => {
@@ -59,33 +57,35 @@ export const ActivationTable: React.FC<ActivationTableProps> = (props) => {
     });
 
     React.useEffect(() => {
-        const app = activatedPowerPlants(props.day);
-        props.activatedPowerplantsCallback(app);
-    }, [props.day])
+        props.activatedPowerplantsCallback(data.map((activation) => activation.powerplant));
+    }, [data]);
 
     return (
-        <table className="activation-table" {...getTableProps()}>
-            <thead>
-            {headerGroups.map(headerGroup => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(column => (
-                        <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                    ))}
-                </tr>
-            ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-                prepareRow(row)
-                return (
-                    <tr {...row.getRowProps()}>
-                        {row.cells.map(cell => {
-                            return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                        })}
+        <div className="activation-table-wrapper">
+            <h3>Activations on {dayjs(props.day).format("MMMM D, YYYY")}</h3>
+            <table className="activation-table" {...getTableProps()}>
+                <thead>
+                {headerGroups.map(headerGroup => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map(column => (
+                            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                        ))}
                     </tr>
-                )
-            })}
-            </tbody>
-        </table>
-    )
+                ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                {rows.map((row) => {
+                    prepareRow(row);
+                    return (
+                        <tr {...row.getRowProps()}>
+                            {row.cells.map(cell => {
+                                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                            })}
+                        </tr>
+                    );
+                })}
+                </tbody>
+            </table>
+        </div>
+    );
 };

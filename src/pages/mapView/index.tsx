@@ -15,11 +15,6 @@ const MainApp: React.FC = () => {
     const [selectedPowerPlant, setSelectedPowerPlant] = React.useState<string>();
     const [highlightedNames, setHighlightedNames] = React.useState<string[]>();
 
-    const activatedPowerplantsCallback = (powerplants: {powerplant: string}[]) => {
-        const names = powerplants.map(p => p.powerplant);
-        setHighlightedNames(names);
-    }
-
     return (
         <>
             <div id="menu">
@@ -33,7 +28,7 @@ const MainApp: React.FC = () => {
                 </div>
                 <div id="dashboard">
                     {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
-                    <ActivationTable day={selectedDay} activatedPowerplantsCallback={activatedPowerplantsCallback}/>
+                    <ActivationTable day={selectedDay} activatedPowerplantsCallback={setHighlightedNames}/>
                 </div>
             </div>
         </>
