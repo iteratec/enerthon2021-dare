@@ -1,5 +1,5 @@
 .powerplant-table{font-size:xx-small;display:flex;flex-direction:column;justify-content:flex-start;background-color:#ccc;padding:.5em}.powerplant-table .powerplant-row{display:flex;flex-direction:row;justify-content:space-between;border-bottom:1px solid #fff}.powerplant-table .powerplant-row .powerplant-row-header{font-weight:bolder;margin-right:1em}
-.leaflet-container{height:100%}.windmill{stroke:#000;stroke-width:3px;fill:none;fill-rule:evenodd}.popupContent{text-align:center;height:300px;width:300px;margin-top:30px}
+.leaflet-container{height:100%}.windmill{stroke:#000;stroke-width:3px;fill:none;fill-rule:evenodd}.popupContent{text-align:center;height:300px;width:300px;margin-top:30px}.highlight{opacity:.5}
 @charset "UTF-8";
 .react-datepicker__year-read-view--down-arrow,
 .react-datepicker__month-read-view--down-arrow,
@@ -747,6 +747,6 @@
 }
 
 .titlemenu{display:flex;flex-direction:row;justify-content:space-between}.titlemenu .datepicker{max-width:40%;margin-right:2em}
-table.activation-table{background:#f5f5f5;border-collapse:collapse;font-size:12px;line-height:22px;margin:16px;text-align:left;width:90%;min-width:200px}table.activation-table thead{background-color:#1089ff}table.activation-table th{border:none;color:#fff;font-weight:bold;padding:5px 10px;position:relative;text-shadow:0 1px 0 #1157a5}table.activation-table td{border:none;padding:5px 10px;position:relative;transition:all 300ms}table.activation-table tbody tr:nth-child(odd){background-color:#d7d7d7}table.activation-table tbody:hover tr:hover{background-color:#7d7d7d}
+.activation-table-wrapper{margin:0 16px}table.activation-table{background:#f5f5f5;border-collapse:collapse;font-size:12px;line-height:22px;margin:0;text-align:left;width:100%;min-width:200px}table.activation-table thead{background-color:#1089ff}table.activation-table th{border:none;color:#fff;font-weight:bold;padding:5px 10px;position:relative;text-shadow:0 1px 0 #1157a5}table.activation-table td{border:none;padding:5px 10px;position:relative;transition:all 300ms}table.activation-table tbody tr:nth-child(odd){background-color:#d7d7d7}table.activation-table tbody:hover tr:hover{background-color:#7d7d7d}table.activation-table .activation-icon-up svg{color:green}table.activation-table .activation-icon-down svg{color:#ce0000}
 
-/*# sourceMappingURL=mapView.42d4d593.css.map*/
+/*# sourceMappingURL=mapView.3133baf5.css.map*/
