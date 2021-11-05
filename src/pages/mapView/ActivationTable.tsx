@@ -1,6 +1,8 @@
 import * as React from "react";
+import * as _ from "lodash";
 import {Column, useTable} from "react-table";
 import {activationDataPerDay} from "./activationData";
+import {powerPlantData} from "./powerPlantData";
 import dayjs from "dayjs";
 
 import "./ActivationTable.scss";
@@ -11,6 +13,7 @@ export interface ActivationTableDataRow {
     isUp: boolean;
     isDown: boolean;
     rdRequirementId: number;
+    provider: string;
 }
 
 export interface ActivationTableProps {
@@ -21,22 +24,22 @@ export interface ActivationTableProps {
 
 const columns: Column<ActivationTableDataRow>[] = [
     {
-        Header: "Activations",
-        columns: [
-            {
-                Header: 'Name',
-                accessor: 'powerplant',
-            },
-            {
-                Header: 'Direction',
-                Cell: props => (
-                    <span>
-                        {props.row.original.isUp && <PowerUpIcon/>}
-                        {props.row.original.isDown && <PowerDownIcon/>}
-                    </span>
-                )
-            }]
+        Header: 'Power plant',
+        accessor: 'powerplant',
     },
+    {
+        Header: 'Provider',
+        accessor: 'provider',
+    },
+    {
+        Header: 'Direction',
+        Cell: props => (
+            <span>
+                        {props.row.original.isUp && <PowerUpIcon/>}
+                {props.row.original.isDown && <PowerDownIcon/>}
+                    </span>
+        )
+    }
 ];
 
 const activatedPowerPlants = (day: Date): ActivationTableDataRow[] => {
@@ -66,13 +69,14 @@ const activatedPowerPlants = (day: Date): ActivationTableDataRow[] => {
                         powerplant: activation.powerplant,
                         isUp: activation.type === "up",
                         isDown: activation.type === "down",
-                        rdRequirementId: activation.rdRequirementId
+                        rdRequirementId: activation.rdRequirementId,
+                        provider: powerPlantData[activation.powerplant]["Anschlussnetzbetreiber"]
                     }];
                 }
             }
         });
 
-        return result;
+        return _.sortBy(result, "provider");
     }, []);
 };
 
@@ -97,6 +101,7 @@ export const ActivationTable: React.FC<ActivationTableProps> = (props) => {
 
     return (
         <div className="activation-table-wrapper">
+            <h4>Redispatch activations</h4>
             <table className="activation-table" {...getTableProps()}>
                 <thead>
                 {headerGroups.map((headerGroup, idx) => {
@@ -113,7 +118,8 @@ export const ActivationTable: React.FC<ActivationTableProps> = (props) => {
                 {rows.map((row) => {
                     prepareRow(row);
                     return (
-                        <tr {...row.getRowProps()} className={props.selectedRDIds?.includes(row.original.rdRequirementId) ? 'highlighted' : ''}>
+                        <tr {...row.getRowProps()}
+                            className={props.selectedRDIds?.includes(row.original.rdRequirementId) ? 'highlighted' : ''}>
                             {row.cells.map(cell => {
                                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
                             })}
