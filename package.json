@@ -13,7 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "homepage": "https://https://iteratec.github.io/enerthon2021-dare/build",
+  "homepage": "https://iteratec.github.io/enerthon2021-dare/build",
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@types/d3": "^7.1.0",
