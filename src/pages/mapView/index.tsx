@@ -4,7 +4,8 @@ import * as ReactDOM from "react-dom";
 import {MapView} from "./MapView";
 import {DareDayPicker} from "./DareDayPicker";
 import {PlanDataChart} from "./PlanDataChart";
-import {ActivationTable, ActivationTableDataRow} from "./ActivationTable";
+import {ActivationTableDataRow} from "./ActivationTable";
+import {RedispatchesAndActivations} from "./RedispatchesAndActivations";
 
 document.getElementById("title").innerText = "Map View";
 
@@ -30,7 +31,7 @@ const MainApp: React.FC = () => {
                              }, {}) : undefined}/>
                 </div>
                 <div id="dashboard">
-                    <ActivationTable day={selectedDay} activatedPowerplantsCallback={setActivatedPowerplants}/>
+                    <RedispatchesAndActivations day={selectedDay} activatedPowerplantsCallback={setActivatedPowerplants}/>
                     {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
                 </div>
             </div>
