@@ -32,7 +32,7 @@ const columns: Column<ActivationTableDataRow>[] = [
         accessor: 'provider',
     },
     {
-        Header: 'Direction',
+        Header: 'Dir',
         Cell: props => (
             <span>
                         {props.row.original.isUp && <PowerUpIcon/>}

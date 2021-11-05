@@ -81,12 +81,12 @@ export const MapView = ({popupOpenedCallback, highlightedPowerplants}: MapViewPr
 
         {Object.keys(powerPlantData).map(name => {
             if(highlightedPowerplants && highlightedPowerplants[name]) {
-                return <SVGOverlay bounds={[[powerPlantData[name].Lat - .4, powerPlantData[name].Lon - .4], [powerPlantData[name].Lat + .4, powerPlantData[name].Lon + .4]]}>
+                return <SVGOverlay key={name} bounds={[[powerPlantData[name].Lat - .4, powerPlantData[name].Lon - .4], [powerPlantData[name].Lat + .4, powerPlantData[name].Lon + .4]]}>
                     <circle className="highlight" r={zoomLevel > 0 ? DEFAULT_HIGHLIGHT_CIRCLE_RADIUS + zoomLevel : DEFAULT_HIGHLIGHT_CIRCLE_RADIUS} cx="50%" cy="50%" fill={highlightedPowerplants[name] == "up" ? "green" : "red"}/>
                 </SVGOverlay>
             }
 
-            return <span/>
+            return <span key={name} />
         })}
 
         {Object.keys(powerPlantData).map((name) => <PowerPlantMarker

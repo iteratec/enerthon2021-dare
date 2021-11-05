@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import "./RDRequirementsTable.scss";
 import {PowerDownIcon, PowerUpIcon} from "../components/icons";
 import {redispatchData} from "./redispatchData";
+import {DailyPowerBar} from "./DailyPowerBar";
+import {QuarterData} from "./types";
 
 export interface RDRequirementsTableProps {
     day: Date;
@@ -16,6 +18,7 @@ interface RDRequirementTableDataRow {
     resource: string;
     name: string;
     direction: "up" | "down";
+    data: QuarterData;
 }
 
 const columns: Column<RDRequirementTableDataRow>[] = [
@@ -28,12 +31,17 @@ const columns: Column<RDRequirementTableDataRow>[] = [
         accessor: 'name',
     },
     {
-        Header: 'Direction',
+        Header: 'Dir',
         Cell: props => (
             <span>
                 {props.row.original.direction === 'up' ? <PowerUpIcon/> : <PowerDownIcon/>}
             </span>
         )
+    },
+    {
+        Header: '',
+        id: 'distribution',
+        Cell: props => (<DailyPowerBar data={props.row.original.data} isEmptyWhenZero={true} />)
     }
 ];
 
@@ -44,7 +52,7 @@ const collectRedispatchRequirements = (day: Date): RDRequirementTableDataRow[] =
         .filter((rdData) => rdData.date === currentDayString)
         .sort((a, b) => a.rdid - b.rdid)
         .sort((a, b) => a.resourceObject.localeCompare(b.resourceObject))
-        .map((rd) => ({id: rd.rdid, direction: rd.direction, resource: rd.resourceObject, name: rd.nbName}));
+        .map((rd) => ({id: rd.rdid, direction: rd.direction, resource: rd.resourceObject, name: rd.nbName, data: rd.data}));
 };
 
 export const RDRequirementsTable: React.FC<RDRequirementsTableProps> = (props) => {
