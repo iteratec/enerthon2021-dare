@@ -69,14 +69,6 @@ const common = {
                         },
                     },
                     {
-                        test: /\.(js|jsx|mjs)$/,
-                        include: absPath("src"),
-                        loader: "babel-loader",
-                        options: {
-                            compact: true,
-                        },
-                    },
-                    {
                         test: /\.(ts|tsx)$/,
                         include: absPath("src"),
                         use: [

@@ -6,6 +6,7 @@ import {DareDayPicker} from "./DareDayPicker";
 import {PlanDataChart} from "./PlanDataChart";
 import {ActivationTableDataRow} from "./ActivationTable";
 import {RedispatchesAndActivations} from "./RedispatchesAndActivations";
+import {RdChart} from "./RdChart";
 
 document.getElementById("title").innerText = "Map View";
 
@@ -33,6 +34,7 @@ const MainApp: React.FC = () => {
                 <div id="dashboard">
                     <RedispatchesAndActivations day={selectedDay} activatedPowerplantsCallback={setActivatedPowerplants}/>
                     {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
+                    <RdChart day={selectedDay}/>
                 </div>
             </div>
         </>
