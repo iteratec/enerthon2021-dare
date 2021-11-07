@@ -22,7 +22,7 @@ const MainApp: React.FC = () => {
     const [dashboardWidth, setDashboardWidth] = useState(0);
     const [rdRequirementsData, setRdRequirementsData] = useState<RedispatchChartData>();
 
-    useEffect(() => {
+    const createRdRequirementsData = () => {
         const redispatchDataOnDay = redispatchData.filter(rd => rd.date == toYYYYMMDD(selectedDay));
 
         const aggregated: LineDatum[] = [];
@@ -54,6 +54,10 @@ const MainApp: React.FC = () => {
             linenames: Array.from(linenames),
             linedata: aggregated
         })
+    }
+
+    useEffect(() => {
+        createRdRequirementsData();
     }, [selectedDay])
 
     useEffect(() => {
