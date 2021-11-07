@@ -19,9 +19,10 @@ interface DispatchChartProps {
     width: number;
     height: number;
     chartData?: RedispatchChartData;
+    yTitle: string;
 }
 
-export function RedispatchChart({height, width, chartData}: DispatchChartProps) {
+export function RedispatchChart({height, width, chartData, yTitle}: DispatchChartProps) {
 
     return (
         <XYChart
@@ -57,7 +58,7 @@ export function RedispatchChart({height, width, chartData}: DispatchChartProps) 
             />
             <AnimatedAxis
                 key="y-axis"
-                label="RD Requirements (MW)"
+                label={yTitle}
                 orientation="right"
                 numTicks={4}
                 animationTrajectory="center"
