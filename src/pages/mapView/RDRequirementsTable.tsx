@@ -3,7 +3,7 @@ import {Column, useTable} from "react-table";
 import dayjs from "dayjs";
 
 import "./RDRequirementsTable.scss";
-import {PowerDownIcon, PowerUpIcon} from "../components/icons";
+import {PowerDownIcon, PowerUpIcon} from "../../components/icons";
 import {redispatchData} from "./redispatchData";
 import {DailyPowerBar} from "./DailyPowerBar";
 import {QuarterData} from "./types";

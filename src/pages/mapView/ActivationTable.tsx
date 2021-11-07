@@ -6,7 +6,7 @@ import {powerPlantData} from "./powerPlantData";
 import dayjs from "dayjs";
 
 import "./ActivationTable.scss";
-import {PowerDownIcon, PowerUpIcon} from "../components/icons";
+import {PowerDownIcon, PowerUpIcon} from "../../components/icons";
 
 export interface ActivationTableDataRow {
     powerplant: string;
