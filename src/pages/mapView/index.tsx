@@ -14,7 +14,7 @@ import {toYYYYMMDD, quarterToHour} from "../../util/dateUtil";
 
 document.getElementById("title").innerText = "Map View";
 
-const defaultDay = new Date("2021-06-01");
+const defaultDay = new Date("2021-06-05");
 
 const MainApp: React.FC = () => {
     const [selectedDay, setSelectedDay] = React.useState(defaultDay);

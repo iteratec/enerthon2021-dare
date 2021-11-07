@@ -39,7 +39,7 @@ const chartData = (name, date) => {
 export const  PlanDataChart = ({name, date}: PlanDataChartProps) => {
 
     return <div className="popupContent">
-        <h3>Plan Data for {name} on {dayjs(date).format("MMMM D, YYYY")}</h3>
+        <h5>Plan Data for {name}</h5>
         <AreaChart showGrid={false} data={chartData(name, dayjs(date).add(1, "day").format("YYYY-MM-DD[T][00]:mm:ssZ"))}/>
     </div>
 
