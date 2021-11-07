@@ -1,3 +1,10 @@
+export const businessTypeMapping = {
+    "A01_--": "planned power output",
+    "A77_A01": "additional activatable power",
+    "A77_A02": "deactivable power"
+}
+
+
 export const timeseriesData =
     {
         "Wind001": {

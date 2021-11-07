@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {AreaChart} from "react-charts-d3";
 import dayjs from "dayjs";
 
-import {timeseriesData} from "./timeseriesData"
+import {businessTypeMapping, timeseriesData} from "./timeseriesData"
+import MultilineChart from "../components/multiline-chart/MultilineChart";
 
 interface PlanDataChartProps {
     name: string
@@ -16,12 +16,12 @@ const chartData = (name, date) => {
 
     const dataMap = {};
     Object.entries(timeseries).forEach((series) => {
-        const xValue = dateObj.add(15 * (+series[0] - 1), 'minute')
+        const xValue = dateObj.add(15 * (+series[0] - 1), 'minute');
         const yValues = series[1];
 
         Object.entries(yValues).forEach((yValue) => {
             if (yValue[0]) {
-                const d = {x: xValue.format('H:mm'), y: +yValue[1]}
+                const d = {date: xValue.format('HH:mm'), value: +yValue[1]}
                 const group = dataMap[yValue[0]]
                 if (group) {
                     group.push(d);
@@ -31,16 +31,25 @@ const chartData = (name, date) => {
             }
         });
     })
-    return Object.keys(dataMap).map((group) => {
-        return {key: group, values: dataMap[group]}
-    });
+
+    const linenames = Object.keys(dataMap);
+
+    const data = linenames.map((name, index) => {
+        return {linename: businessTypeMapping[name], linedata: dataMap[name]}
+    })
+
+    return data;
+
 }
 
-export const  PlanDataChart = ({name, date}: PlanDataChartProps) => {
 
+export const PlanDataChart = ({name, date}: PlanDataChartProps) => {
     return <div className="popupContent">
         <h3>Plan Data for {name} on {dayjs(date).format("MMMM D, YYYY")}</h3>
-        <AreaChart showGrid={false} data={chartData(name, dayjs(date).add(1, "day").format("YYYY-MM-DD[T][00]:mm:ssZ"))}/>
+
+        <MultilineChart chartData={chartData(name, dayjs(date).add(1, "day").format("YYYY-MM-DD[T][00]:mm:ssZ"))}
+                        width={600} height={200}/>
+
     </div>
 
 }
