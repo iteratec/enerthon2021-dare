@@ -6,8 +6,10 @@ import {DareDayPicker} from "./DareDayPicker";
 import {PlanDataChart} from "./PlanDataChart";
 import {ActivationTableDataRow} from "./ActivationTable";
 import {RedispatchesAndActivations} from "./RedispatchesAndActivations";
-import RedispatchChart from "./RedispatchChart";
+import {RedispatchChart, LineDatum, RedispatchChartData} from "./RedispatchChart";
 import {useEffect, useState} from "react";
+import {RedispatchData, redispatchData} from "./redispatchData";
+import {toYYYYMMDD, quarterToHour} from "../../util/dateUtil";
 
 document.getElementById("title").innerText = "Map View";
 
@@ -18,6 +20,41 @@ const MainApp: React.FC = () => {
     const [selectedPowerPlant, setSelectedPowerPlant] = React.useState<string>();
     const [activatedPowerplants, setActivatedPowerplants] = React.useState<ActivationTableDataRow[]>();
     const [dashboardWidth, setDashboardWidth] = useState(0);
+    const [rdRequirementsData, setRdRequirementsData] = useState<RedispatchChartData>();
+
+    useEffect(() => {
+        const redispatchDataOnDay = redispatchData.filter(rd => rd.date == toYYYYMMDD(selectedDay));
+
+        const aggregated: LineDatum[] = [];
+
+        const linenames = new Set<string>();
+
+        const addToAggregated = (rd: RedispatchData) => {
+            Object.keys(rd.data).forEach(k => {
+                let aggEl = aggregated.find(agg => agg.q == k);
+                if (!aggEl) {
+                    aggEl = {q: k, hour: quarterToHour(Number(k))}
+                    aggregated.push(aggEl);
+                }
+
+                const id = `${rd.nbName} (${rd.direction})`
+
+                if (aggEl[id]) {
+                    aggEl[id] += rd.data[k];
+                } else {
+                    linenames.add(id);
+                    aggEl[id] = rd.data[k];
+                }
+            })
+        }
+
+        redispatchDataOnDay.forEach(addToAggregated);
+
+        setRdRequirementsData({
+            linenames: Array.from(linenames),
+            linedata: aggregated
+        })
+    }, [selectedDay])
 
     useEffect(() => {
         setTimeout(() => {
@@ -43,7 +80,7 @@ const MainApp: React.FC = () => {
                 <div id="dashboard">
                     <RedispatchesAndActivations day={selectedDay} activatedPowerplantsCallback={setActivatedPowerplants}/>
                     {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
-                    {dashboardWidth > 0 && <RedispatchChart width={dashboardWidth/5*4} height={200} day={selectedDay}/>}
+                    {dashboardWidth > 0 && <RedispatchChart width={dashboardWidth/5*4} height={200} day={selectedDay} chartData={rdRequirementsData}/>}
                 </div>
             </div>
         </>

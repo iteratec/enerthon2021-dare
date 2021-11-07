@@ -6,16 +6,22 @@ import {redispatchChartTheme} from "./redispatchChartTheme";
 import {redispatchData, RedispatchData} from "./redispatchData";
 import {toYYYYMMDD} from "../../util/dateUtil";
 
+export interface LineDatum {
+    q: string;
+    hour: string;
+    [key: string]: string;
+}
+
+export interface RedispatchChartData {
+    linenames: string[];
+    linedata: LineDatum[];
+}
+
 interface DispatchChartProps {
     width: number;
     height: number;
     day: Date;
-}
-
-interface Aggregated {
-    q: string;
-    hour: string;
-    [key: string]: string;
+    chartData?: RedispatchChartData;
 }
 
 const quarterToHour = (q: number): string => {
@@ -27,11 +33,11 @@ const quarterToHour = (q: number): string => {
     return `${hour}:${minute == 0 ? "00" : minute}`
 }
 
-export default function RedispatchChart({height, width, day}: DispatchChartProps) {
+export function RedispatchChart({height, width, day, chartData}: DispatchChartProps) {
 
     const rdDataOnDay = redispatchData.filter(rd => rd.date == toYYYYMMDD(day));
 
-    const aggregated: Aggregated[] = [];
+    const aggregated: LineDatum[] = [];
 
     const lineNames = new Set<string>();
 
@@ -95,7 +101,7 @@ export default function RedispatchChart({height, width, day}: DispatchChartProps
                 numTicks={4}
                 animationTrajectory="center"
             />
-            <Tooltip<Aggregated>
+            <Tooltip<LineDatum>
                 showHorizontalCrosshair={true}
                 showVerticalCrosshair={true}
                 snapTooltipToDatumX={false}
