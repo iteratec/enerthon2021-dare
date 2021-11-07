@@ -25,7 +25,8 @@ const MainApp: React.FC = () => {
     const [rdActivationData, setRdActivationData] = useState<RedispatchChartData>();
 
     const _addToAggregated = (rd: {name: string, direction: string, data: {[key: string]: number}}, aggregated: LineDatum[], linenames: Set<string>) => {
-        Object.keys(rd.data).forEach(k => {
+        Array.from(Array(96).keys()).forEach(q => {
+            const k = q+1;
             let aggEl = aggregated.find(agg => agg.q == k);
             if (!aggEl) {
                 aggEl = {q: k, hour: quarterToHour(Number(k))}
@@ -102,8 +103,8 @@ const MainApp: React.FC = () => {
                 <div id="dashboard">
                     <RedispatchesAndActivations day={selectedDay} activatedPowerplantsCallback={setActivatedPowerplants}/>
                     {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
-                    {dashboardWidth > 0 && <RedispatchChart width={dashboardWidth/5*4} height={200} chartData={rdRequirementsData}/>}<br/>
-                    {dashboardWidth > 0 && <RedispatchChart width={dashboardWidth/5*4} height={200} chartData={rdActivationData}/>}
+                    {dashboardWidth > 0 && <RedispatchChart yTitle="RD Requirements (MW)" width={dashboardWidth/5*4} height={200} chartData={rdRequirementsData}/>}<br/>
+                    {dashboardWidth > 0 && <RedispatchChart yTitle="RD Activations (MW)" width={dashboardWidth/5*4} height={200} chartData={rdActivationData}/>}
                 </div>
             </div>
         </>
