@@ -5,9 +5,9 @@ import CustomChartBackground from './CustomChartBackground';
 import {redispatchChartTheme} from "./redispatchChartTheme";
 
 export interface LineDatum {
-    q: string;
-    hour: string;
-    [key: string]: string;
+    q: any;
+    hour: any;
+    [key: string]: any;
 }
 
 export interface RedispatchChartData {
