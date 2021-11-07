@@ -6,7 +6,8 @@ import {DareDayPicker} from "./DareDayPicker";
 import {PlanDataChart} from "./PlanDataChart";
 import {ActivationTableDataRow} from "./ActivationTable";
 import {RedispatchesAndActivations} from "./RedispatchesAndActivations";
-import {RdChart} from "./RdChart";
+import RedispatchChart from "./RedispatchChart";
+import {useEffect, useState} from "react";
 
 document.getElementById("title").innerText = "Map View";
 
@@ -16,6 +17,14 @@ const MainApp: React.FC = () => {
     const [selectedDay, setSelectedDay] = React.useState(defaultDay);
     const [selectedPowerPlant, setSelectedPowerPlant] = React.useState<string>();
     const [activatedPowerplants, setActivatedPowerplants] = React.useState<ActivationTableDataRow[]>();
+    const [dashboardWidth, setDashboardWidth] = useState(0);
+
+    useEffect(() => {
+        setTimeout(() => {
+            const rect = document.getElementById("dashboard").getBoundingClientRect();
+            setDashboardWidth(rect.width);
+        }, 100)
+    }, [])
 
     return (
         <>
@@ -34,7 +43,7 @@ const MainApp: React.FC = () => {
                 <div id="dashboard">
                     <RedispatchesAndActivations day={selectedDay} activatedPowerplantsCallback={setActivatedPowerplants}/>
                     {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
-                    <RdChart day={selectedDay}/>
+                    {dashboardWidth > 0 && <RedispatchChart width={dashboardWidth/5*4} height={200} day={selectedDay}/>}
                 </div>
             </div>
         </>
