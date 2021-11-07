@@ -3,58 +3,25 @@ import {AnimatedAxis, AnimatedGrid, AnimatedLineSeries, Tooltip, XYChart} from "
 
 import CustomChartBackground from './CustomChartBackground';
 import {redispatchChartTheme} from "./redispatchChartTheme";
-import {redispatchData, RedispatchData} from "./redispatchData";
-import {toYYYYMMDD} from "../../util/dateUtil";
+
+export interface LineDatum {
+    q: any;
+    hour: any;
+    [key: string]: any;
+}
+
+export interface RedispatchChartData {
+    linenames: string[];
+    linedata: LineDatum[];
+}
 
 interface DispatchChartProps {
     width: number;
     height: number;
-    day: Date;
+    chartData?: RedispatchChartData;
 }
 
-interface Aggregated {
-    q: string;
-    hour: string;
-    [key: string]: string;
-}
-
-const quarterToHour = (q: number): string => {
-    const quot = Math.floor((q-1) / 4);
-    const rem = (q-1) % 4;
-    const hour = quot < 2 ? 22 + quot : quot - 2;
-    const minute = rem  * 15;
-
-    return `${hour}:${minute == 0 ? "00" : minute}`
-}
-
-export default function RedispatchChart({height, width, day}: DispatchChartProps) {
-
-    const rdDataOnDay = redispatchData.filter(rd => rd.date == toYYYYMMDD(day));
-
-    const aggregated: Aggregated[] = [];
-
-    const lineNames = new Set<string>();
-
-    const addToAggregated = (rd: RedispatchData) => {
-        Object.keys(rd.data).forEach(k => {
-            let aggEl = aggregated.find(agg => agg.q == k);
-            if (!aggEl) {
-                aggEl = {q: k, hour: quarterToHour(Number(k))}
-                aggregated.push(aggEl);
-            }
-
-            const id = `${rd.nbName} (${rd.direction})`
-
-            if (aggEl[id]) {
-                aggEl[id] += rd.data[k];
-            } else {
-                lineNames.add(id);
-                aggEl[id] = rd.data[k];
-            }
-        })
-    }
-
-    rdDataOnDay.forEach(addToAggregated);
+export function RedispatchChart({height, width, chartData}: DispatchChartProps) {
 
     return (
         <XYChart
@@ -74,11 +41,11 @@ export default function RedispatchChart({height, width, day}: DispatchChartProps
                 numTicks={4}
             />
 
-            {Array.from(lineNames).map(linename =>
+            {chartData.linenames.map(linename =>
                 <AnimatedLineSeries
                     key={linename}
                     dataKey={linename}
-                    data={aggregated}
+                    data={chartData.linedata}
                     xAccessor={(agg) => agg.hour}
                     yAccessor={(agg) => agg[linename]}/>)}
 
@@ -95,7 +62,7 @@ export default function RedispatchChart({height, width, day}: DispatchChartProps
                 numTicks={4}
                 animationTrajectory="center"
             />
-            <Tooltip<Aggregated>
+            <Tooltip<LineDatum>
                 showHorizontalCrosshair={true}
                 showVerticalCrosshair={true}
                 snapTooltipToDatumX={false}
