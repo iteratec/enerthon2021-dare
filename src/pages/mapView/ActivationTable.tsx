@@ -1,34 +1,43 @@
 import * as React from "react";
+import * as _ from "lodash";
 import {Column, useTable} from "react-table";
 import {activationDataPerDay} from "./activationData";
+import {powerPlantData} from "./powerPlantData";
 import dayjs from "dayjs";
 
 import "./ActivationTable.scss";
-import {SVG} from "../components/SVG";
+import {PowerDownIcon, PowerUpIcon} from "../../components/icons";
 
-export interface ActivationTableProps {
-    day: Date;
-    activatedPowerplantsCallback: (powerplants: string[]) => void;
-}
-
-interface ActivationTableDataRow {
+export interface ActivationTableDataRow {
     powerplant: string;
     isUp: boolean;
     isDown: boolean;
+    rdRequirementId: number;
+    provider: string;
+}
+
+export interface ActivationTableProps {
+    day: Date;
+    selectedRDIds: number[];
+    activatedPowerplantsCallback: (powerplants: ActivationTableDataRow[]) => void;
 }
 
 const columns: Column<ActivationTableDataRow>[] = [
     {
-        Header: 'Name',
+        Header: 'Power plant',
         accessor: 'powerplant',
     },
     {
-        Header: 'Direction',
+        Header: 'Provider',
+        accessor: 'provider',
+    },
+    {
+        Header: 'Dir',
         Cell: props => (
             <span>
-                {props.row.original.isUp && <SVG name="arrow-top-right-bold-outline" className="activation-icon-up" />}
-                {props.row.original.isDown && <SVG name="arrow-down-right-bold-outline" className="activation-icon-down" />}
-            </span>
+                        {props.row.original.isUp && <PowerUpIcon/>}
+                {props.row.original.isDown && <PowerDownIcon/>}
+                    </span>
         )
     }
 ];
@@ -59,13 +68,15 @@ const activatedPowerPlants = (day: Date): ActivationTableDataRow[] => {
                     result = [...result, {
                         powerplant: activation.powerplant,
                         isUp: activation.type === "up",
-                        isDown: activation.type === "down"
+                        isDown: activation.type === "down",
+                        rdRequirementId: activation.rdRequirementId,
+                        provider: powerPlantData[activation.powerplant]["Anschlussnetzbetreiber"]
                     }];
                 }
             }
         });
 
-        return result;
+        return _.sortBy(result, "provider");
     }, []);
 };
 
@@ -85,27 +96,30 @@ export const ActivationTable: React.FC<ActivationTableProps> = (props) => {
     });
 
     React.useEffect(() => {
-        props.activatedPowerplantsCallback(data.map((activation) => activation.powerplant));
-    }, [data]);
+        props.activatedPowerplantsCallback(data);
+    }, [data, props.activatedPowerplantsCallback]);
 
     return (
         <div className="activation-table-wrapper">
-            <h3>Activations on {dayjs(props.day).format("MMMM D, YYYY")}</h3>
+            <h4>Redispatch activations</h4>
             <table className="activation-table" {...getTableProps()}>
                 <thead>
-                {headerGroups.map(headerGroup => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map(column => (
-                            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                        ))}
-                    </tr>
-                ))}
+                {headerGroups.map((headerGroup, idx) => {
+                    return (
+                        <tr {...headerGroup.getHeaderGroupProps()} className={`header-grp-level-${idx}`}>
+                            {headerGroup.headers.map(column => (
+                                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+                            ))}
+                        </tr>
+                    );
+                })}
                 </thead>
                 <tbody {...getTableBodyProps()}>
                 {rows.map((row) => {
                     prepareRow(row);
                     return (
-                        <tr {...row.getRowProps()}>
+                        <tr {...row.getRowProps()}
+                            className={props.selectedRDIds?.includes(row.original.rdRequirementId) ? 'highlighted' : ''}>
                             {row.cells.map(cell => {
                                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
                             })}

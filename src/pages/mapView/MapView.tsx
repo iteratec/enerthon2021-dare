@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {useState} from 'react';
-import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from 'react-leaflet';
+import {MapContainer, Marker, Popup, SVGOverlay, TileLayer, useMapEvents} from 'react-leaflet';
 
-import {scaledIcon} from "../marker/leaflet-color-markers";
+import {scaledIcon} from "../../marker/leaflet-color-markers";
 import {PowerPlantTable} from "./PowerPlantTable";
 
 import {powerPlantData} from "./powerPlantData";
@@ -15,8 +15,10 @@ const colormap = {
     "B19": "blue"
 };
 
+export type HighlightedPowerplants = {[kay: string]: "up" | "down"};
+
 interface MapViewProps {
-    highlightedNames?: string[];
+    highlightedPowerplants?: HighlightedPowerplants;
     popupOpenedCallback: (name: string) => void;
 }
 
@@ -36,14 +38,12 @@ const ZoomListener = ({zoomChangedCallback}: ZoomListenerProps) => {
 
 interface PowerPlantMarkerProps {
     name: string;
-    highlightedNames?: string[];
     markerSize: number;
     onOpenPopup: (name: string) => void;
 }
 
 const PowerPlantMarker: React.FC<PowerPlantMarkerProps> = ({
                                                                name,
-                                                               highlightedNames,
                                                                markerSize,
                                                                onOpenPopup
                                                            }) => {
@@ -51,7 +51,7 @@ const PowerPlantMarker: React.FC<PowerPlantMarkerProps> = ({
         onOpenPopup(name);
     }, [name, onOpenPopup]);
     return (<Marker
-        icon={scaledIcon((highlightedNames && highlightedNames.indexOf(name)) > -1 ? markerSize * 3 : markerSize, colormap[powerPlantData[name]["Energieträger"]], name)}
+        icon={scaledIcon(markerSize, colormap[powerPlantData[name]["Energieträger"]], name)}
         position={[powerPlantData[name]["Lat"], powerPlantData[name]["Lon"]]}>
         <Popup onOpen={popupOpenCallback}>
             <h3>{name}</h3>
@@ -60,12 +60,13 @@ const PowerPlantMarker: React.FC<PowerPlantMarkerProps> = ({
     </Marker>);
 };
 
-export const MapView = ({popupOpenedCallback, highlightedNames}: MapViewProps) => {
+export const MapView = ({popupOpenedCallback, highlightedPowerplants}: MapViewProps) => {
     const DEFAULT_MARKER_SIZE = 0.8;
-    const [markerSize, setMarkerSize] = useState(DEFAULT_MARKER_SIZE);
+    const DEFAULT_HIGHLIGHT_CIRCLE_RADIUS = 15;
+    const [zoomLevel, setZoomLevel] = useState(-1);
 
-    const newZoom = React.useCallback((zoom: number) => {
-        setMarkerSize(DEFAULT_MARKER_SIZE * zoom / 8);
+    const newZoomLevel = React.useCallback((zoomLevel: number) => {
+        setZoomLevel(zoomLevel);
     }, []);
 
     return <MapContainer center={[48.72136522068032, 9.700661146305457]}
@@ -76,13 +77,22 @@ export const MapView = ({popupOpenedCallback, highlightedNames}: MapViewProps) =
             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
-        <ZoomListener zoomChangedCallback={newZoom}/>
+        <ZoomListener zoomChangedCallback={newZoomLevel}/>
+
+        {Object.keys(powerPlantData).map(name => {
+            if(highlightedPowerplants && highlightedPowerplants[name]) {
+                return <SVGOverlay key={name} bounds={[[powerPlantData[name].Lat - .4, powerPlantData[name].Lon - .4], [powerPlantData[name].Lat + .4, powerPlantData[name].Lon + .4]]}>
+                    <circle className="highlight" r={zoomLevel > 0 ? DEFAULT_HIGHLIGHT_CIRCLE_RADIUS + zoomLevel : DEFAULT_HIGHLIGHT_CIRCLE_RADIUS} cx="50%" cy="50%" fill={highlightedPowerplants[name] == "up" ? "green" : "red"}/>
+                </SVGOverlay>
+            }
+
+            return <span key={name} />
+        })}
 
         {Object.keys(powerPlantData).map((name) => <PowerPlantMarker
             key={name}
             name={name}
-            markerSize={markerSize}
-            highlightedNames={highlightedNames}
+            markerSize={zoomLevel > 0 ? DEFAULT_MARKER_SIZE * zoomLevel / 8 : DEFAULT_MARKER_SIZE}
             onOpenPopup={popupOpenedCallback}/>)}
     </MapContainer>;
 };

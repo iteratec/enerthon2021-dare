@@ -85,11 +85,16 @@ export const scaledIcon = (scale: number, color: string, name?: string) => {
 	let iconUrl = `img/marker-icon-2x-${color}.png`;
 	let shadowUrl = 'img/marker-shadow.png';
 	let additionalScale = 1;
+	let iconAnchorX = 12;
+	let iconAnchorY = 41;
+
 	if(name) {
 		if(name.startsWith("W")) {
 			iconUrl = "img/windmill.gif";
 			additionalScale = 3;
 			shadowUrl = undefined;
+			iconAnchorX = 13;
+			iconAnchorY = 35;
 		} else if(name.startsWith("B")) {
 			iconUrl = "img/biogas.png";
 			shadowUrl = undefined;
@@ -104,7 +109,7 @@ export const scaledIcon = (scale: number, color: string, name?: string) => {
 		iconUrl,
 		shadowUrl,
 		iconSize: [25*_scale, 41*_scale],
-		iconAnchor: [12*_scale, 41*_scale],
+		iconAnchor: [iconAnchorX*_scale, iconAnchorY*_scale],
 		popupAnchor: [1*_scale, -34*_scale],
 		shadowSize: [41*_scale, 41*_scale]
 	});
