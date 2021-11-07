@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useState} from 'react';
 import {MapContainer, Marker, Popup, SVGOverlay, TileLayer, useMapEvents} from 'react-leaflet';
 
-import {scaledIcon} from "../marker/leaflet-color-markers";
+import {scaledIcon} from "../../marker/leaflet-color-markers";
 import {PowerPlantTable} from "./PowerPlantTable";
 
 import {powerPlantData} from "./powerPlantData";
