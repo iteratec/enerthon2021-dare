@@ -35,33 +35,6 @@ const quarterToHour = (q: number): string => {
 
 export function RedispatchChart({height, width, day, chartData}: DispatchChartProps) {
 
-    const rdDataOnDay = redispatchData.filter(rd => rd.date == toYYYYMMDD(day));
-
-    const aggregated: LineDatum[] = [];
-
-    const lineNames = new Set<string>();
-
-    const addToAggregated = (rd: RedispatchData) => {
-        Object.keys(rd.data).forEach(k => {
-            let aggEl = aggregated.find(agg => agg.q == k);
-            if (!aggEl) {
-                aggEl = {q: k, hour: quarterToHour(Number(k))}
-                aggregated.push(aggEl);
-            }
-
-            const id = `${rd.nbName} (${rd.direction})`
-
-            if (aggEl[id]) {
-                aggEl[id] += rd.data[k];
-            } else {
-                lineNames.add(id);
-                aggEl[id] = rd.data[k];
-            }
-        })
-    }
-
-    rdDataOnDay.forEach(addToAggregated);
-
     return (
         <XYChart
             theme={redispatchChartTheme}
