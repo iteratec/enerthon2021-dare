@@ -7,6 +7,7 @@ import MultilineChart from "../components/multiline-chart/MultilineChart";
 interface PlanDataChartProps {
     name: string
     date: Date
+    width: number
 }
 
 const chartData = (name, date) => {
@@ -43,12 +44,12 @@ const chartData = (name, date) => {
 }
 
 
-export const PlanDataChart = ({name, date}: PlanDataChartProps) => {
+export const PlanDataChart = ({name, date, width}: PlanDataChartProps) => {
     return <div className="popupContent">
         <h5>Plan Data for {name}</h5>
 
         <MultilineChart chartData={chartData(name, dayjs(date).add(1, "day").format("YYYY-MM-DD[T][00]:mm:ssZ"))}
-                        width={600} height={200}/>
+                        width={width} height={200}/>
 
     </div>
 
