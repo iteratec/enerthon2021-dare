@@ -80,11 +80,11 @@ export function RedispatchChart({height, width, day, chartData}: DispatchChartPr
                 numTicks={4}
             />
 
-            {Array.from(lineNames).map(linename =>
+            {chartData.linenames.map(linename =>
                 <AnimatedLineSeries
                     key={linename}
                     dataKey={linename}
-                    data={aggregated}
+                    data={chartData.linedata}
                     xAccessor={(agg) => agg.hour}
                     yAccessor={(agg) => agg[linename]}/>)}
 
