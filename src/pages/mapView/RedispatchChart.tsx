@@ -3,8 +3,6 @@ import {AnimatedAxis, AnimatedGrid, AnimatedLineSeries, Tooltip, XYChart} from "
 
 import CustomChartBackground from './CustomChartBackground';
 import {redispatchChartTheme} from "./redispatchChartTheme";
-import {redispatchData, RedispatchData} from "./redispatchData";
-import {toYYYYMMDD} from "../../util/dateUtil";
 
 export interface LineDatum {
     q: string;
@@ -20,20 +18,10 @@ export interface RedispatchChartData {
 interface DispatchChartProps {
     width: number;
     height: number;
-    day: Date;
     chartData?: RedispatchChartData;
 }
 
-const quarterToHour = (q: number): string => {
-    const quot = Math.floor((q-1) / 4);
-    const rem = (q-1) % 4;
-    const hour = quot < 2 ? 22 + quot : quot - 2;
-    const minute = rem  * 15;
-
-    return `${hour}:${minute == 0 ? "00" : minute}`
-}
-
-export function RedispatchChart({height, width, day, chartData}: DispatchChartProps) {
+export function RedispatchChart({height, width, chartData}: DispatchChartProps) {
 
     return (
         <XYChart
