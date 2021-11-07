@@ -4,6 +4,12 @@ export const businessTypeMapping = {
     "A77_A02": "deactivable power"
 }
 
+export const businessTypeColorMapping = {
+    "A01_--": "#66d9e8",
+    "A77_A01": "#7a66e8",
+    "A77_A02": "#0b7285"
+}
+
 
 export const timeseriesData =
     {

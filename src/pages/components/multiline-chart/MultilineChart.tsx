@@ -1,26 +1,15 @@
-import React, {useMemo, useCallback} from 'react';
+import React from 'react';
 
-import {scaleTime, scaleLinear} from '@visx/scale';
 import {withTooltip} from '@visx/tooltip';
 import {WithTooltipProvidedProps} from '@visx/tooltip/lib/enhancers/withTooltip';
-import {localPoint} from '@visx/event';
-import {max, extent, bisector} from 'd3-array';
-import {timeFormat} from 'd3-time-format';
-import {redispatchChartTheme} from "../../mapView/redispatchChartTheme";
-import {AnimatedAxis, AnimatedGrid, AnimatedLineSeries, Tooltip, XYChart} from "@visx/xychart";
+import {AnimatedAxis, AnimatedGrid, AreaSeries, buildChartTheme, Tooltip, XYChart} from "@visx/xychart";
 import CustomChartBackground from "../../mapView/CustomChartBackground";
-import {LineDatum} from "../../mapView/RedispatchChart";
-import dayjs from "dayjs";
 
 type TooltipData = ChartData;
-
-// util
-const formatDate = timeFormat("%H:%M");
 
 // accessors
 const getDate = (d: ChartDatum) => d.date;
 const getValue = (d: ChartDatum) => d.value;
-const bisectDate = bisector<ChartDatum, Date>((d) => new Date(d.date)).left;
 
 export type ChartDatum = {
     value: number,
@@ -29,6 +18,7 @@ export type ChartDatum = {
 
 export type ChartData = {
     linename: string,
+    linecolor: string,
     linedata: ChartDatum[]
 }
 
@@ -37,6 +27,10 @@ export type AreaProps = {
     width: number;
     height: number;
 };
+
+const customTheme = buildChartTheme({
+    colors: [], backgroundColor: "#fff", gridColor: "#adb5bd", gridColorDark: "#adb5bd", tickLength: 0
+});
 
 export default withTooltip<AreaProps, TooltipData>(
     ({
@@ -48,7 +42,7 @@ export default withTooltip<AreaProps, TooltipData>(
 
         return (
             <XYChart
-                theme={redispatchChartTheme}
+                theme={customTheme}
                 xScale={{type: "band", paddingInner: 0.3}}
                 yScale={{type: "linear"}}
                 height={Math.min(400, height)}
@@ -64,14 +58,19 @@ export default withTooltip<AreaProps, TooltipData>(
                     numTicks={4}
                 />
 
-                {chartData.map(lineData =>
-                    <AnimatedLineSeries
-                        key={lineData.linename}
-                        dataKey={lineData.linename}
-                        data={lineData.linedata}
-                        xAccessor={(d) => getDate(d)}
-                        yAccessor={(d) => getValue(d)}/>)}
-
+                <>
+                    {chartData.map(lineData =>
+                        <AreaSeries
+                            key={lineData.linename}
+                            dataKey={lineData.linename}
+                            data={lineData.linedata}
+                            stroke={lineData.linecolor}
+                            fill={lineData.linecolor}
+                            xAccessor={(d) => getDate(d)}
+                            yAccessor={(d) => getValue(d)}
+                            fillOpacity={0.2}
+                        />)}
+                </>
                 <AnimatedAxis
                     key="x-axis"
                     orientation="bottom"
@@ -109,7 +108,7 @@ export default withTooltip<AreaProps, TooltipData>(
                                     <div key={linename}>
                                         <em
                                             style={{
-                                                color: colorScale?.(linename),
+                                                color: lineValues.linecolor,
                                                 textDecoration:
                                                     tooltipData?.nearestDatum?.key === linename ? 'underline' : undefined,
                                             }}
