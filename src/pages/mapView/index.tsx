@@ -102,7 +102,8 @@ const MainApp: React.FC = () => {
                 <div id="dashboard">
                     <RedispatchesAndActivations day={selectedDay} activatedPowerplantsCallback={setActivatedPowerplants}/>
                     {selectedPowerPlant && <PlanDataChart name={selectedPowerPlant} date={selectedDay}/>}
-                    {dashboardWidth > 0 && <RedispatchChart width={dashboardWidth/5*4} height={200} chartData={rdRequirementsData}/>}
+                    {dashboardWidth > 0 && <RedispatchChart width={dashboardWidth/5*4} height={200} chartData={rdRequirementsData}/>}<br/>
+                    {dashboardWidth > 0 && <RedispatchChart width={dashboardWidth/5*4} height={200} chartData={rdActivationData}/>}
                 </div>
             </div>
         </>
