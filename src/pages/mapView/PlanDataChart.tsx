@@ -1,7 +1,7 @@
 import * as React from 'react';
 import dayjs from "dayjs";
 
-import {businessTypeMapping, timeseriesData} from "./timeseriesData"
+import {businessTypeColorMapping, businessTypeMapping, timeseriesData} from "./timeseriesData"
 import MultilineChart from "../components/multiline-chart/MultilineChart";
 
 interface PlanDataChartProps {
@@ -36,7 +36,7 @@ const chartData = (name, date) => {
     const linenames = Object.keys(dataMap);
 
     const data = linenames.map((name, index) => {
-        return {linename: businessTypeMapping[name], linedata: dataMap[name]}
+        return {linename: businessTypeMapping[name], linecolor: businessTypeColorMapping[name], linedata: dataMap[name]}
     })
 
     return data;
