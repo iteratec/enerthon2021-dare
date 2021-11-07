@@ -53,7 +53,7 @@ export function RedispatchChart({height, width, chartData, yTitle}: DispatchChar
             <AnimatedAxis
                 key="x-axis"
                 orientation="bottom"
-                numTicks={4}
+                numTicks={12}
                 animationTrajectory="center"
             />
             <AnimatedAxis
