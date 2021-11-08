@@ -15,15 +15,15 @@ export const DareDayPicker = ({startDay, dayChangedCallback}: DareDayPickerProps
     const [selectedDay, setSelectedDay] = useState(startDay);
 
     useEffect(() => {
-        dayChangedCallback(selectedDay)
+        dayChangedCallback(dayjs(selectedDay).add(-1, 'day').toDate())
     }, [selectedDay])
 
     return <div className="titlemenu">
         <h3>RD requirements & Activations on {dayjs(selectedDay).format("MMMM D, YYYY")}</h3>
         <div className="datepicker">
             <DatePicker
-                minDate={new Date("2021-06-01")}
-                maxDate={new Date("2021-06-05 ")}
+                minDate={new Date("2021-06-02")}
+                maxDate={new Date("2021-06-06")}
                 selected={selectedDay}
                 onChange={(day) => setSelectedDay(day)}/>
         </div>
